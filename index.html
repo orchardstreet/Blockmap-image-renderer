@@ -12,7 +12,6 @@ function hexToBytes6(hexVal) {
 
 function getColors(rgb565Hex) {
     var rgb565Int = parseInt(rgb565Hex)
-    //      console.log(rgb565Int);
     var r = (((rgb565Int >> 11) & 0x1f) * 527 + 23) >> 6
     var g = (((rgb565Int >> 5) & 0x3f) * 259 + 33) >> 6
     var b = ((rgb565Int & 0x1f) * 527 + 23) >> 6
@@ -123,7 +122,6 @@ function convertBase(str, fromBase, toBase) {
 
 function decToHex(decStr) {
     var hex = convertBase(decStr, 10, 16);
-    // console.log(hex);
     return hex ? '0x' + hex : null;
 }
 
@@ -311,13 +309,8 @@ console.log("stringg: " + hexTransparentPixelGroupIndexesString);
 for (var x = 0; x < hexTransparentPixelGroups.length; x++) {
     for (var y = 0; y < hexTransparentPixelGroups[x].length; y++) {
         if (y % 2 == 1) {
-            //                              console.log(hexTransparentPixelGroups[x][y]);
-            //                              console.log(hexColorIndexString.length);
-            //                              console.log("z" + z);
-            //                              console.log("x" + x);
 
             if (hexColorIndexString[hexTransparentPixelGroups[x][y] * 4] != undefined) {
-                //      console.log("yeet" + hexColorIndexString.substr((hexTransparentPixelGroups[x][y])*4,4));                                
                 var rgbColors =  getColors("0x" + hexColorIndexString.substr((hexTransparentPixelGroups[x][y])*4,4));
                 var subFinalArray = [];
                 subFinalArray.push(rgbColors[0]);
@@ -328,7 +321,6 @@ for (var x = 0; x < hexTransparentPixelGroups.length; x++) {
                 var pixelinstrip = Math.floor(y / 2);
                 //may need to substract 1 from stripnumber!
                 var position = stripnumber * 32 + pixelinstrip;
-                //                               console.log(position);
                 subFinalArray.push(255);
                 subFinalArray.push(position);
                 if (hexTransparentPixelGroups[x][y] == 0) {
@@ -338,7 +330,7 @@ for (var x = 0; x < hexTransparentPixelGroups.length; x++) {
                 finalArray.push(subFinalArray);
             } else {
                 document.getElementById("warning").innerHTML = "corrupt or misunderstood image data from Ethereum blockchain, cannot process";
-                console.log("ERROR LOG" + hexTransparentPixelGroups[x][y]);
+                console.log("ERROR LOG: " + hexTransparentPixelGroups[x][y]);
                 console.log(hexColorIndexString.length);
                 console.log("x" + x);
                 console.log("y" + y);
