@@ -321,12 +321,12 @@ for (var x = 0; x < hexTransparentPixelGroups.length; x++) {
                 var pixelinstrip = Math.floor(y / 2);
                 //may need to substract 1 from stripnumber!
                 var position = stripnumber * 32 + pixelinstrip;
-                subFinalArray.push(255);
-                subFinalArray.push(position);
                 if (hexTransparentPixelGroups[x][y] == 0) {
                     subFinalArray[3] = 0;
+                } else {
+                    subFinalArray.push(255);
                 }
-
+                subFinalArray.push(position);
                 finalArray.push(subFinalArray);
             } else {
                 document.getElementById("warning").innerHTML = "corrupt or misunderstood image data from Ethereum blockchain, cannot process";
