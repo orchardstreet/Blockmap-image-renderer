@@ -1,6 +1,6 @@
-<!DOCTYPE html >
-    <html >
-    <body >
+<!DOCTYPE html>
+    <html>
+    <body>
     hello <div id = "warning"> </div> 
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script><script>
 
@@ -337,7 +337,8 @@ for (var x = 0; x < hexTransparentPixelGroups.length; x++) {
             //                              console.log("x" + x);
 
             if (hexColorIndexString[hexTransparentPixelGroups[x][y] * 4] != undefined) {
-                //      console.log("yeet" + hexColorIndexString.substr((hexTransparentPixelGroups[x][y])*4,4));                                var rgbColors =  getColors("0x" + hexColorIndexString.substr((hexTransparentPixelGroups[x][y])*4,4));
+                //      console.log("yeet" + hexColorIndexString.substr((hexTransparentPixelGroups[x][y])*4,4));                                
+                var rgbColors =  getColors("0x" + hexColorIndexString.substr((hexTransparentPixelGroups[x][y])*4,4));
                 var subFinalArray = [];
                 subFinalArray.push(rgbColors[0]);
                 subFinalArray.push(rgbColors[1]);
