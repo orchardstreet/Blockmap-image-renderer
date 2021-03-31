@@ -17,12 +17,9 @@ function getColors(rgb565Hex) {
     var g = (((rgb565Int >> 5) & 0x3f) * 259 + 33) >> 6
     var b = ((rgb565Int & 0x1f) * 527 + 23) >> 6
 
-    //        var RGB888 = (r << 16) | (g << 8) | b
-    //        var RGB = hexToBytes6(RGB888.toString(16))
-    //        var RGBAHex = '0x'.concat(RGB).concat('FF')
-    //  return parseInt(RGBAHex)
     return [r, g, b];
 }
+        
 //decToHex function
 //From http://www.danvk.org/hex2dec.html
 /**
@@ -136,17 +133,6 @@ function hexToDec(hexStr) {
     return convertBase(hexStr, 16, 10);
 }
 
-//change endianness function
-const changeEndianness = (string) => {
-    const result = [];
-    let len = string.length - 2;
-    while (len >= 0) {
-        result.push(string.substr(len, 2));
-        len -= 2;
-    }
-    return result.join('');
-}
-
 function convertStringToHex(str) {
     var arr = [];
     for (var i = 0; i < str.length; i++) {
@@ -154,6 +140,7 @@ function convertStringToHex(str) {
     }
     return "\\u" + arr.join("\\u");
 }
+        
 //declare variables
 var decimalColorIndex = [];
 var hexColorIndex = [];
@@ -164,11 +151,7 @@ var decimalTransparentPixelGroups = [];
 var hexTransparentPixelGroups = [];
 var decimalTransparentPixelGroupIndexes = [];
 var hexTransparentPixelGroupIndexes = [];
-var finalDecimalColorIndexes = [];
-var finalHexColorIndexes = [];
-var finalRGBColorIndexes = [];
-var finalRGBcolorplusposition = [];
-var metadata = [];
+var finalArray = [];
 
 //declare arrays
 decimalColorIndex = ["10341175981655095603254301379947889"];
@@ -272,8 +255,6 @@ decimalTransparentPixelGroupIndexes = [
     "240453744334157740726462637401841186214"
 ]
 
-metadata = [0, 1];
-
 //convert declared arrays to hexidemimal while iterating through:
 //decimalColorIndex
 //decimalTransparentPixelGroups
@@ -324,7 +305,6 @@ for (var x = 0; x < decimalTransparentPixelGroupIndexes.length; x++) {
 var hexTransparentPixelGroupIndexesString = hexTransparentPixelGroupIndexes.join('');
 console.log("stringg: " + hexTransparentPixelGroupIndexesString);
 
-var finalArray = [];
 //finalArray
 //iterate through characters in hexTransparentPixelGroups
 //after find colorr index, find hex colorr in hexColorIndexString, and then find RGB in getColors function,
