@@ -11,7 +11,7 @@ cd Blockmap-image-renderer
 
 npm init
 
-npm install --save dotenv mysql2 web3
+npm install --save dotenv mysql2 web3 ws
 
 sudo mysql -u root -p
 
