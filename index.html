@@ -1,9 +1,19 @@
 <!DOCTYPE html>
     <html>
-    <body>
-    hello <div id = "warning"> </div> 
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script><script>
+                <body>
+            hello!!! <div id = "warning"> </div>
+            <div id = "notif"></div>
+            <input id="answer" type="text"></input>
+            <button id="answerbutton">Submit</button>
+            <div id="response"></div>
+                                <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script><script>
 
+//websocket connection
+const wss = new WebSocket('ws://sonorousprograms.com/socket');
+wss.onopen = () => {
+console.log('Now connected');
+document.getElementById('notif').innerHTML = "We are connected";
+};
 //functions
 
 function hexToBytes6(hexVal) {
@@ -367,6 +377,19 @@ function draw() {
 
     updatePixels();
 }
+        
+        function answerbuttonfunc() {
+        wss.send(document.getElementById("answer").value);
+        console.log(document.getElementById("answer").value);
+
+}
+
+var answerbuttonvar = document.getElementById("answerbutton");
+answerbuttonvar.addEventListener('click',answerbuttonfunc,false);
+
+wss.addEventListener("message", e  => {
+document.getElementById("response").innerHTML = e.data;
+});
 
 </script>
 
