@@ -3,6 +3,10 @@ Converts Uint32 Arrays on Ethereum blockchain to an HTML5 canvas image using Mur
 
 Runs on a server, use linux desktop terminal, Windows-Subsystem for linux or a VPS.  Run the following command to install:
 # Installation
+Configure your server to serve index.html first, and then upgrade connections to your-site-name.com/socket to a websockets connection
+
+put the name-of-your-site.com/socket on line 13 of index.html
+
 sudo apt install nodejs npm mariadb-server
 
 sudo git clone https://github.com/orchardstreet/Blockmap-image-renderer
