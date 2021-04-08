@@ -9,6 +9,8 @@ sudo git clone https://github.com/orchardstreet/Blockmap-image-renderer
 
 cd Blockmap-image-renderer
 
+npm init
+
 npm install --save dotenv mysql2 web3
 
 sudo mysql -u root -p
