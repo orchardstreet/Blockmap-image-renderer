@@ -29,7 +29,7 @@ DB_HOST='your database host'
 
 DB_USER='root'
 
-DB_PASSWORD='your database password'
+DB_PASSWORD='your database password, if any'
 
 DB_DATABASE='test'
 
