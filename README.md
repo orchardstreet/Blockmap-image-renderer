@@ -26,11 +26,17 @@ exit;
 vi .env   #enter the following in the .env file and then save the file in the main directory:
 
 DB_HOST='your database host'
+
 DB_USER='root'
+
 DB_PASSWORD='your database password'
+
 DB_DATABASE='test'
+
 DB_WAITCON=true
+
 DB_CONLIMIT=50
+
 DB_QUEUELIMIT=0
 
 node index.html
