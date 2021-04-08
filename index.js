@@ -79,3 +79,25 @@ async function syncDatabaseToBlockchainData() {
 }
 
 syncDatabaseToBlockchainData();
+
+const WebSocket = require('ws');
+const host = '127.0.0.1';
+const port = 8082;
+const socketServer = new WebSocket.Server({ host, port });
+var userchosenID = 0;
+socketServer.on('connection', (socketClient) => {
+        console.log('connected');
+        console.log('client Set length: ',socketServer.clients.size);
+        socketClient.on("message", data => {
+        console.log("Received: " + data);
+        socketClient.send(data.toUpperCase());
+
+        });
+
+        socketClient.on('close', (socketClient) => {
+                console.log('closed');
+                console.log('Number of clients: ', socketServer.clients.size);
+
+        });
+
+});
