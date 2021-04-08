@@ -9,7 +9,8 @@
                                 <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script><script>
 
 //websocket connection
-const wss = new WebSocket('ws://sonorousprograms.com/socket');
+        //put name of your site below
+const wss = new WebSocket('ws://name-of-your-site.com/socket');
 wss.onopen = () => {
 console.log('Now connected');
 document.getElementById('notif').innerHTML = "We are connected";
