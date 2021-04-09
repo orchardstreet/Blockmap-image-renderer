@@ -11,7 +11,7 @@ put the name-of-your-site.com/socket on line 13 of index.html
 
 sudo apt install nodejs npm mariadb-server
 
-sudo git clone https://github.com/orchardstreet/Blockmap-image-renderer
+git clone https://github.com/orchardstreet/Blockmap-image-renderer
 
 cd Blockmap-image-renderer
 
