@@ -1,19 +1,19 @@
-<!DOCTYPE html>
+<!DOCTYPE html >
     <html>
-                <body>
-            hello!!! <div id = "warning"> </div>
-            <div id = "notif"></div>
-            <input id="answer" type="text"></input>
-            <button id="answerbutton">Submit</button>
-            <div id="response"></div>
-                                <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script><script>
+    <body>
+    hello!!! <div id = "warning"> </div> 
+    <div id = "notif"></div> 
+    <input id = "answer" type = "text"> </input> 
+    <button id = "answerbutton"> Submit </button> 
+    <div id = "response"> </div> 
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"> </script><script>
 
 //websocket connection
-        //put name of your site below
-const wss = new WebSocket('ws://name-of-your-site.com/socket');
+//put name of your site below
+const wss = new WebSocket('ws://sonorousprograms.com/socket');
 wss.onopen = () => {
-console.log('Now connected');
-document.getElementById('notif').innerHTML = "We are connected";
+    console.log('Now connected');
+    document.getElementById('notif').innerHTML = "We are connected";
 };
 //functions
 
@@ -29,7 +29,7 @@ function getColors(rgb565Hex) {
 
     return [r, g, b];
 }
-        
+
 //decToHex function
 //From http://www.danvk.org/hex2dec.html
 /**
@@ -149,7 +149,7 @@ function convertStringToHex(str) {
     }
     return "\\u" + arr.join("\\u");
 }
-        
+
 //declare variables
 var decimalColorIndex = [];
 var hexColorIndex = [];
@@ -160,109 +160,33 @@ var decimalTransparentPixelGroups = [];
 var hexTransparentPixelGroups = [];
 var decimalTransparentPixelGroupIndexes = [];
 var hexTransparentPixelGroupIndexes = [];
+var decimalPixelGroups = [];
+var hexPixelGroups = [];
+var decimalPixelGroupIndexes = [];
+var hexPixelGroupIndexes = [];
+var decimalPixelData = [];
+var hexPixelData = [];
 var finalArray = [];
 
 //declare arrays
-decimalColorIndex = ["10341175981655095603254301379947889"];
+decimalColorIndex = ["50654763755424210328672425327695615307906252058919690782771433632062"];
+
+decimalPixelData = [
+    "650869216450885381842794140471645523731727370840522625210399475703437402376",
+    "1104507469932510824869762672892436606713942292148051592307742111968340828423",
+    "257266029179750072068322184028890766890969877420580281320249385225"
+];
 decimalTransparentPixelGroups = [
-    "377078862888227322197610963000877773354147183132929",
-    "454086624460063511464984254936031011189294057512315932668752017228564529152",
-    "375611652173011975087909381875825410811545209929985",
-    "454086624460063511464984254936031011189299249809174467496380547724893749248",
-    "749756071330063404514894409352142902055712422166785",
-    "906406374790088072818527886785008925168834986579591800281000187259101642752",
-    "377073153897456493165789871317449980360235677712641",
-    "455860373271190299573596764008107345796115843145022340374999024733756850176",
-    "377073153897456493165790180802459801986779379204609",
-    "454086624460063511464984254936031011190623285508102057467475438918019579904",
-    "375611652173011975087909381875825410811545209929985",
-    "454086624460063511464984629080450168240723484576881056510401001647788523520",
-    "751217595268140835211999431449046298313440293355777",
-    "906399473043741275977638716636756893536769272738720069914291599725312344064",
-    "377073153810344207234029624670826080857703015579907",
-    "1362246015756153056870799170317891128325950008502170201941981026382426144768",
-    "749756071330063404514894409352142902055708127331075",
-    "1362259819248846637998374039829615682376854910720114542715091351430873743360",
-    "375611652260124261019590400359934973919998425367299",
-    "1362259873379364555636768002559481911782127894636407453798611114457261146112",
-    "375611674473757173638735704852699465079372671812355",
-    "1362259873380190521791517123561110480298920480209889990936138891664061104128",
-    "375611652173011975087909691360835304779365572870915",
-    "1362259873380190534394760451642180451436637203498246592217926010812550348800",
-    "749756071330063404514894409361624673189940512883459",
-    "1362259873380190534394953511623967038831709087493068724194137340659885932544",
-    "375611674473757173638736326250034070542294569911043",
-    "1362259873380190534394952764796630275628031953570644397035350456352150388736",
-    "375611652173011975087989231435692656145172900545283",
-    "1362259873380190534394952764808048257169679632619110684790946417443212361728",
-    "375617361163782804119810323114398082656214760751875",
-    "1362259873380190534394952764808048257169679632619110684790946417443212361728",
-    "375611652173011975087989231435692656145172900545283",
-    "1362259873380190534394952764808048257171008860614896809589669839132667412480",
-    "377073153810344207234188701184281842971889113432835",
-    "1362259873380190534394952764808048344281970756755444028756738788065747664896",
-    "375611652173011975087989231435692656145172900545283",
-    "1362259873380190534394952764808048257171008860614896809589669839132667412480",
-    "749756071330063404515053487074524483784523399758595",
-    "1362259873380190534394952764808048257169679632619110684790946417443212361728",
-    "375617361163782804119810323114398082656214760751875",
-    "1362259873380190534394952764808048257169684824915969219618574947939541581824",
-    "375611652173011975087989231435692656145172900545283",
-    "1362259873380190534394952764808048257169679632619110684790946417443212361728",
-    "751217572967395636661252956823113670611239612646147",
-    "1362259873380190534394952764808048344281965564458585493929110257569418444800",
-    "749756071417175690446813733721148383287056061891331",
-    "1362259873380190534394952764808048257171014052911755344417298369628996632576",
-    "375611652260124261019749478082316555647705562678019",
-    "1362259873380190534394952764808070557914878183524661824160889489751969628160",
-    "375611674473757173638894782575062599217481657811715",
-    "1362259873380190534394952764808048257169679632619110684790946417443212361728",
-    "375611652173011975087989231435692656145172900545283",
-    "1362259873380190534394952764808048257169679632619110684790946417443212361728",
-    "749761780320834233546874578753229910295565259965187",
-    "1362259873380190534394952764808048257509967191837217168091770900440034574336",
-    "375611652173011975087989231435692656145172900545283",
-    "1362259873380190534394952764808048257169679632619110684790946417443212361728",
-    "377078862888227322197611583184582640310276547871491",
-    "1362259873380190534394952764796630275628031953570644397035350456352150388736",
-    "375611652173011975087909381885307109888183557620483",
-    "1362259873380190534394952013584788687543937189173498915693506883699152519168",
-    "749756071330063404514894409352143046736053803352835",
-    "1362259873380190534394856234074986293933473450230603128396349041789825449984",
-    "375617361163782804119651245396738868819851663835907",
-    "1362259873380190521791517123561110480297591252214103866137415469974606053376",
-    "377073153897456493165790180802459801986788002824963",
-    "1362259873379364555636768002559481911783457122632193578597334536146716196864",
-    "375611652173011975087909381875825410811545209996035",
-    "1362259819248846637998374413974034839426955109788893541758016914160642686976",
-    "751217595268140835211999431449046298313440293355779",
-    "1369313404015677970328462661831401544683570053720132236942152424463978725376",
-    "375617383464528002670556796536127257227751128629506",
-    "454086651525322470308701164954840648371527266808311536917716507850180657152",
-    "749756071330063404514894409352142902055708127199489",
-    "454086624460063511464984254936031011190623285508102057467475438918019579904",
-    "375611652260124261019590400359934973919989801746690",
-    "454086624565375803133541441633949038872964489831211028069301128482875506688",
-    "375611674473757173638735704852699464232740111581441",
-    "454086624460063511464984254936031011190623285508102057467475438918019579904",
-    "375611674473757173638735704852699464232740111581441",
-    "454086624460063511464984254936031011189294057512315932668752017228564529152",
-    "375611652260124261019669628522449310314082167030017",
-    "906399500003687943152798439957648503035332049715820578762706979092617494528",
-    "375611674473757173638735704852699464232740111581441",
-    "454086624460063511464984254936031011189294057512315932668752017228564529152",
-    "375611652173011975087909381875825410811545209929985",
-    "454086624460063511464984254936031011189294057512315932668752017228564529152"
+    "3547551543381039034383664699734519055362002671414524853577384928774979584",
+    "41599411626257476698747227190631632426829657449030719785609788613722112",
+    "13857624037477524919099817758309175555578154406742367724197097601236992",
+    "3547497833697698006334470927222211626071888087999105701617075544483954688",
+    "55214603480481032008509109682344702375130587380518920463713671124615168"
+];
+decimalTransparentPixelGroupIndexes = [
+    "531883105784607723844129"
 ];
 
-decimalTransparentPixelGroupIndexes = [
-    "77298971752680121697047279161836464800832613803221473017569847359081428659366",
-    "78203611253549975852183745848712915686937355271884141344238074764468649569958",
-    "79108250754419830007320212535589366573042096740546809670906302169855870480550",
-    "80012890255289684162456679222465817459146838209209477997574529575243091391142",
-    "80917529756159538317593145909342268345251579677872146324242756980630312301734",
-    "240453744334157740726462637401841186214"
-]
 
 //convert declared arrays to hexidemimal while iterating through:
 //decimalColorIndex
@@ -287,42 +211,256 @@ for (var x = 0; x < decimalColorIndex.length; x++) {
 //put all of hexColorIndex into single string
 hexColorIndexString = hexColorIndex.join('');
 console.log("hexColorIndexString" + hexColorIndexString);
-for (var x = 0; x < decimalTransparentPixelGroups.length; x++) {
-    hexTransparentPixelGroups.push(decToHex(decimalTransparentPixelGroups[x]));
-    hexTransparentPixelGroups[x] = hexTransparentPixelGroups[x].slice(2);
-    var difference = 64 - hexTransparentPixelGroups[x].length;
-    while (difference != 0) {
-        hexTransparentPixelGroups[x] = "0" + hexTransparentPixelGroups[x];
-        difference--;
-    }
-    console.log("hexTransparentPixelGroups: " + hexTransparentPixelGroups[x]);
-}
-for (var x = 0; x < decimalTransparentPixelGroupIndexes.length; x++) {
-    hexTransparentPixelGroupIndexes.push(decToHex(decimalTransparentPixelGroupIndexes[x]));
-    hexTransparentPixelGroupIndexes[x] = hexTransparentPixelGroupIndexes[x].slice(2);
-    if (hexTransparentPixelGroupIndexes[x].length % 4 == 1) {
-        hexTransparentPixelGroupIndexes[x] = "000" + hexTransparentPixelGroupIndexes[x];
-    }
-    if (hexTransparentPixelGroupIndexes[x].length % 4 == 2) {
-        hexTransparentPixelGroupIndexes[x] = "00" + hexTransparentPixelGroupIndexes[x];
-    }
-    if (hexTransparentPixelGroupIndexes[x].length % 4 == 3) {
-        hexTransparentPixelGroupIndexes[x] = "0" + hexTransparentPixelGroupIndexes[x];
-    }
-    console.log("hexTransparentPixelGroupIndexes: " + hexTransparentPixelGroupIndexes[x]);
-}
-var hexTransparentPixelGroupIndexesString = hexTransparentPixelGroupIndexes.join('');
-console.log("stringg: " + hexTransparentPixelGroupIndexesString);
 
-//finalArray
-//iterate through characters in hexTransparentPixelGroups
-//after find colorr index, find hex colorr in hexColorIndexString, and then find RGB in getColors function,
-for (var x = 0; x < hexTransparentPixelGroups.length; x++) {
-    for (var y = 0; y < hexTransparentPixelGroups[x].length; y++) {
-        if (y % 2 == 1) {
 
-            if (hexColorIndexString[hexTransparentPixelGroups[x][y] * 4] != undefined) {
-                var rgbColors =  getColors("0x" + hexColorIndexString.substr((hexTransparentPixelGroups[x][y])*4,4));
+//beginning of pixelData
+if (decimalPixelData.length != 0) {
+
+    //convert decimalPixelData to hex, and leftpad them
+    for (var x = 0; x < decimalPixelData.length; x++) {
+        hexPixelData.push(decToHex(decimalPixelData[x]));
+        hexPixelData[x] = hexPixelData[x].slice(2);
+        if (x != decimalPixelData.length - 1) {
+            var difference = 64 - hexPixelData[x].length;
+            while (difference != 0) {
+                hexPixelData[x] = "0" + hexPixelData[x];
+                difference--;
+            }
+        } else {
+            if (hexPixelData[x].length % 7 == 1) {
+                hexPixelData[x] = "000000" + hexPixelData[x];
+            }
+            if (hexPixelData[x].length % 7 == 2) {
+                hexPixelData[x] = "00000" + hexPixelData[x];
+            }
+            if (hexPixelData[x].length % 7 == 3) {
+                hexPixelData[x] = "0000" + hexPixelData[x];
+            }
+            if (hexPixelData[x].length % 7 == 4) {
+                hexPixelData[x] = "000" + hexPixelData[x];
+            }
+            if (hexPixelData[x].length % 7 == 5) {
+                hexPixelData[x] = "00" + hexPixelData[x];
+            }
+            if (hexPixelData[x].length % 7 == 6) {
+                hexPixelData[x] = "0" + hexPixelData[x];
+            }
+        }
+        console.log("hexPixelData: " + hexPixelData[x]);
+    }
+
+    for (var x = 0; x < hexPixelData.length; x++) {
+        for (var y = 0; y < hexPixelData[x].length; y = y + 8) {
+            var slicey = hexPixelData[x].slice(y, y + 8);
+            console.log("slicey: " + slicey);
+            var colourindex = slicey.slice(0, 2);
+            if (colourindex == "00") {
+                colourindex = 0;
+            } else {
+                colourindex = hexToDec("0x" + colourindex);
+            }
+            var group_position = slicey.slice(2, 6);
+            if (group_position == "00") {
+                group_position = 0;
+            } else {
+                group_position = parseInt(hexToDec("0x" + group_position));
+            }
+            var pixelindex = slicey.slice(7, 8);
+            if (pixelindex == "00") {
+                pixelindex = 0;
+            } else {
+                pixelindex = parseInt(hexToDec("0x" + pixelindex));
+            }
+            if (hexColorIndexString[colourindex * 4] != undefined) {
+                console.log("in!");
+                var rgbColors = getColors("0x" + hexColorIndexString.substr(colourindex * 4, 4));
+                var subFinalArray = [];
+
+                subFinalArray.push(rgbColors[0]);
+                subFinalArray.push(rgbColors[1]);
+                subFinalArray.push(rgbColors[2]);
+                //get hexPixelGroupIndexesString string from x and y
+                //may need to substract 1 from stripnumber!
+                var position = (group_position * 32) + pixelindex;
+                console.log("group_position :" + group_position);
+                console.log("position: " + position);
+                subFinalArray.push(255);
+                subFinalArray.push(position);
+                finalArray.push(subFinalArray);
+            } else {
+                document.getElementById("warning").innerHTML = "corrupt or misunderstood image data from Ethereum blockchain, cannot process";
+                console.log("ERROR LOG: " + hexPixelData[x][y]);
+                console.log(hexColorIndexString.length);
+                console.log("x" + x);
+                console.log("y" + y);
+                break;
+
+            }
+
+
+
+        }
+
+    }
+
+
+
+
+}
+
+
+//beginning of pixel groups
+if (decimalPixelGroups.length != 0) {
+    //convert decimalPixelgroups to hex, and leftpad them
+    for (var x = 0; x < decimalPixelGroups.length; x++) {
+        hexPixelGroups.push(decToHex(decimalPixelGroups[x]));
+        hexPixelGroups[x] = hexPixelGroups[x].slice(2);
+        var difference = 64 - hexPixelGroups[x].length;
+        while (difference != 0) {
+            hexPixelGroups[x] = "0" + hexPixelGroups[x];
+            difference--;
+        }
+        //  console.log("hexPixelGroups: " + hexPixelGroups[x]);
+    }
+
+
+    //convert decimalpixelgroupsindexes to hex, and leftpad them
+    for (var x = 0; x < decimalPixelGroupIndexes.length; x++) {
+        hexPixelGroupIndexes.push(decToHex(decimalPixelGroupIndexes[x]));
+        hexPixelGroupIndexes[x] = hexPixelGroupIndexes[x].slice(2);
+        if (x != decimalPixelGroupIndexes.length - 1) {
+            var difference = 64 - hexPixelGroupIndexes[x].length;
+            while (difference != 0) {
+                hexPixelGroupIndexes[x] = "0" + hexPixelGroupIndexes[x];
+                difference--;
+            }
+        } else {
+            if (hexPixelGroupIndexes[x].length % 4 == 1) {
+                hexPixelGroupIndexes[x] = "000" + hexPixelGroupIndexes[x];
+            }
+            if (hexPixelGroupIndexes[x].length % 4 == 2) {
+                hexPixelGroupIndexes[x] = "00" + hexPixelGroupIndexes[x];
+            }
+            if (hexPixelGroupIndexes[x].length % 4 == 3) {
+                hexPixelGroupIndexes[x] = "0" + hexPixelGroupIndexes[x];
+            }
+        }
+        console.log("hexPixelGroupIndexes: " + hexPixelGroupIndexes[x]);
+    }
+    var hexPixelGroupIndexesString = hexPixelGroupIndexes.join('');
+    console.log("stringg: " + hexPixelGroupIndexesString);
+
+
+    for (var x = 0; x < hexPixelGroups.length; x++) {
+        for (var y = 0; y < hexPixelGroups[x].length; y = y + 2) {
+            var thecolor = hexPixelGroups[x].slice(y, y + 2);
+            if (thecolor == "00") {
+                thecolor = 0;
+            } else if (thecolor == undefined) {
+                document.getElementById("warning").innerHTML = "can't find number for color index";
+                console.log("ERROR LOG: " + hexPixelGroups[x][y]);
+                console.log(hexColorIndexString.length);
+                console.log("x" + x);
+                console.log("y" + y);
+                break;
+            } else {
+                thecolor = hexToDec(thecolor);
+            }
+            if (hexColorIndexString[thecolor * 4] != undefined) {
+                var rgbColors = getColors("0x" + hexColorIndexString.substr(thecolor * 4, 4));
+                var subFinalArray = [];
+
+                subFinalArray.push(rgbColors[0]);
+                subFinalArray.push(rgbColors[1]);
+                subFinalArray.push(rgbColors[2]);
+                //get hexPixelGroupIndexesString string from x and y
+                var stripnumber = hexToDec(hexPixelGroupIndexesString.substr(x * 4, 4));
+                var pixelinstrip = Math.floor(y / 2);
+                //may need to substract 1 from stripnumber!
+                var position = (stripnumber) * 32 + pixelinstrip;
+                subFinalArray.push(255);
+                subFinalArray.push(position);
+                finalArray.push(subFinalArray);
+            } else {
+                document.getElementById("warning").innerHTML = "corrupt or misunderstood image data from Ethereum blockchain, cannot process";
+                console.log("ERROR LOG: " + hexPixelGroups[x][y]);
+                console.log(hexColorIndexString.length);
+                console.log("x" + x);
+                console.log("y" + y);
+                break;
+
+            }
+
+        }
+
+    }
+    for (var x = 0; x < 20; x++) {
+        // console.log("pixel groups" + finalArray[x]);
+    }
+    console.log("length" + finalArray.length);
+
+    //end up pixelgroups
+}
+if (decimalTransparentPixelGroups.length != 0) {
+    //convert decimaltransparentpixelgroups to hex, and leftpad them
+    for (var x = 0; x < decimalTransparentPixelGroups.length; x++) {
+        hexTransparentPixelGroups.push(decToHex(decimalTransparentPixelGroups[x]));
+        hexTransparentPixelGroups[x] = hexTransparentPixelGroups[x].slice(2);
+        var difference = 64 - hexTransparentPixelGroups[x].length;
+        while (difference != 0) {
+            hexTransparentPixelGroups[x] = "0" + hexTransparentPixelGroups[x];
+            difference--;
+        }
+        console.log("hexTransparentPixelGroups: " + hexTransparentPixelGroups[x]);
+    }
+
+    //convert decimaltransparentpixelgroupsindexes to hex, and leftpad them
+    for (var x = 0; x < decimalTransparentPixelGroupIndexes.length; x++) {
+        hexTransparentPixelGroupIndexes.push(decToHex(decimalTransparentPixelGroupIndexes[x]));
+        hexTransparentPixelGroupIndexes[x] = hexTransparentPixelGroupIndexes[x].slice(2);
+        if (x != decimalTransparentPixelGroupIndexes.length - 1) {
+            var difference = 64 - hexTransparentPixelGroupIndexes[x].length;
+            while (difference != 0) {
+                hexTransparentPixelGroupIndexes[x] = "0" + hexTransparentPixelGroupIndexes[x];
+                difference--;
+            }
+
+        } else {
+            if (hexTransparentPixelGroupIndexes[x].length % 4 == 1) {
+                hexTransparentPixelGroupIndexes[x] = "000" + hexTransparentPixelGroupIndexes[x];
+            }
+            if (hexTransparentPixelGroupIndexes[x].length % 4 == 2) {
+                hexTransparentPixelGroupIndexes[x] = "00" + hexTransparentPixelGroupIndexes[x];
+            }
+            if (hexTransparentPixelGroupIndexes[x].length % 4 == 3) {
+                hexTransparentPixelGroupIndexes[x] = "0" + hexTransparentPixelGroupIndexes[x];
+            }
+        }
+        console.log("hexTransparentPixelGroupIndexes: " + hexTransparentPixelGroupIndexes[x]);
+    }
+    var hexTransparentPixelGroupIndexesString = hexTransparentPixelGroupIndexes.join('');
+    console.log("stringg: " + hexTransparentPixelGroupIndexesString);
+
+    //finalArray to output transparentpixelgroups and transparentpixelgroupsindexes
+    //iterate through characters in hexTransparentPixelGroups
+    //after find colorr index, find hex colorr in hexColorIndexString, and then find RGB in getColors function,
+    for (var x = 0; x < hexTransparentPixelGroups.length; x++) {
+        for (var y = 0; y < hexTransparentPixelGroups[x].length; y = y + 2) {
+            var thecolor = hexTransparentPixelGroups[x].slice(y, y + 2);
+            if (thecolor == "00") {
+                thecolor = 0;
+            } else if (thecolor == undefined) {
+                document.getElementById("warning").innerHTML = "can't find number for color index";
+                console.log("ERROR LOG: " + hexTransparentPixelGroups[x][y]);
+                console.log(hexColorIndexString.length);
+                console.log("x" + x);
+                console.log("y" + y);
+                break;
+            } else {
+                thecolor = hexToDec(thecolor);
+            }
+            if (hexColorIndexString[thecolor * 4] != undefined) {
+                var rgbColors = getColors("0x" + hexColorIndexString.substr(thecolor * 4, 4));
                 var subFinalArray = [];
                 subFinalArray.push(rgbColors[0]);
                 subFinalArray.push(rgbColors[1]);
@@ -332,7 +470,7 @@ for (var x = 0; x < hexTransparentPixelGroups.length; x++) {
                 var pixelinstrip = Math.floor(y / 2);
                 //may need to substract 1 from stripnumber!
                 var position = stripnumber * 32 + pixelinstrip;
-                if (hexTransparentPixelGroups[x][y] == 0) {
+                if (thecolor == 0) {
                     subFinalArray[3] = 0;
                 } else {
                     subFinalArray.push(255);
@@ -350,50 +488,56 @@ for (var x = 0; x < hexTransparentPixelGroups.length; x++) {
             }
 
         }
-    }
 
+    }
+    for (var x = 0; x < 20; x++) {
+        console.log("transparent pixel groups" + finalArray[x]);
+    }
+    console.log("length" + finalArray.length);
+
+    //closing tag forr transparentpixelgroups
 }
-for (var x = 0; x < 20; x++) {
-    console.log(finalArray[x]);
-}
-console.log("length" + finalArray.length);
 
 //       DRAW THE IMAGE ON HTML5 CANVAS
 function setup() {
     createCanvas(2048, 1024);
     pixelDensity(1);
-    background(5);
+    background(115);
 }
 
 function draw() {
     loadPixels()
     for (var i = 0; i < finalArray.length; i++) {
-        var index = finalArray[i][4] * 4;
-        pixels[index] = finalArray[i][0];
-        pixels[index + 1] = finalArray[i][1];
-        pixels[index + 2] = finalArray[i][2];
-        pixels[index + 3] = finalArray[i][3];
+        if (finalArray[i][3] != 0) {
+            var index = finalArray[i][4] * 4;
+            pixels[index] = finalArray[i][0];
+            pixels[index + 1] = finalArray[i][1];
+            pixels[index + 2] = finalArray[i][2];
+            pixels[index + 3] = finalArray[i][3];
+        }
     }
 
 
     updatePixels();
 }
-        
-        function answerbuttonfunc() {
-        wss.send(document.getElementById("answer").value);
-        console.log(document.getElementById("answer").value);
+
+function answerbuttonfunc() {
+    wss.send(document.getElementById("answer").value);
+    console.log(document.getElementById("answer").value);
 
 }
 
 var answerbuttonvar = document.getElementById("answerbutton");
-answerbuttonvar.addEventListener('click',answerbuttonfunc,false);
+answerbuttonvar.addEventListener('click', answerbuttonfunc, false);
 
-wss.addEventListener("message", e  => {
-document.getElementById("response").innerHTML = e.data;
+wss.addEventListener("message", e => {
+    document.getElementById("response").innerHTML = e.data;
 });
 
-</script>
+<
+/script>
 
 
-</body> 
-</html>
+<
+/body>  <
+/html>
