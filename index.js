@@ -83,7 +83,6 @@ trying: try {
 	if (!isNaN(IDD) && IDD < 1000000000) {
         var result2 = await connection2.query("select * from data where id=" + IDD);
         if (await Object.values(result2[0])[0] == undefined) {
-            latestMysqlID = -1;
 	    break trying;
         } else {
 	    var result3 = Object.values(Object.values(result2[0])[0])[1].toString('utf-8');
