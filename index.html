@@ -171,6 +171,7 @@ var finalArray = [];
 //decimalColorIndex = ["50654763755424210328672425327695615307906252058919690782771433632062"];
 
 function drawNFT(decimalColorIndex,decimalPixelGroups,decimalTransparentPixelGroups,decimalTransparentPixelGroupIndexes,decimalPixelGroupIndexes,decimalPixelData) {
+	    document.getElementById("response").innerHTML = "";
 	    console.log("drawing single NFT");
 //declare variables
 var hexColorIndex = [];
@@ -199,11 +200,11 @@ for (var x = 0; x < decimalColorIndex.length; x++) {
     if (hexColorIndex[x].length % 4 == 3) {
         hexColorIndex[x] = "0" + hexColorIndex[x];
     }
-    console.log("hexColorIndexAFTER: " + hexColorIndex[x]);
+   // console.log("hexColorIndexAFTER: " + hexColorIndex[x]);
 }
 //put all of hexColorIndex into single string
 hexColorIndexString = hexColorIndex.join('');
-console.log("hexColorIndexString" + hexColorIndexString);
+//console.log("hexColorIndexString" + hexColorIndexString);
 
 
 //beginning of pixelData
@@ -213,39 +214,35 @@ if (decimalPixelData.length != 0) {
     for (var x = 0; x < decimalPixelData.length; x++) {
         hexPixelData.push(decToHex(decimalPixelData[x]));
         hexPixelData[x] = hexPixelData[x].slice(2);
-        if (x != decimalPixelData.length - 1) {
-            var difference = 64 - hexPixelData[x].length;
-            while (difference != 0) {
-                hexPixelData[x] = "0" + hexPixelData[x];
-                difference--;
+            if (hexPixelData[x].length % 8 == 1) {
+                hexPixelData[x] = "0000000" + hexPixelData[x];
             }
-        } else {
-            if (hexPixelData[x].length % 7 == 1) {
+            if (hexPixelData[x].length % 8 == 2) {
                 hexPixelData[x] = "000000" + hexPixelData[x];
             }
-            if (hexPixelData[x].length % 7 == 2) {
+            if (hexPixelData[x].length % 8 == 3) {
                 hexPixelData[x] = "00000" + hexPixelData[x];
             }
-            if (hexPixelData[x].length % 7 == 3) {
+            if (hexPixelData[x].length % 8 == 4) {
                 hexPixelData[x] = "0000" + hexPixelData[x];
             }
-            if (hexPixelData[x].length % 7 == 4) {
+            if (hexPixelData[x].length % 8 == 5) {
                 hexPixelData[x] = "000" + hexPixelData[x];
             }
-            if (hexPixelData[x].length % 7 == 5) {
+            if (hexPixelData[x].length % 8 == 6) {
                 hexPixelData[x] = "00" + hexPixelData[x];
             }
-            if (hexPixelData[x].length % 7 == 6) {
+            if (hexPixelData[x].length % 8 == 7) {
                 hexPixelData[x] = "0" + hexPixelData[x];
             }
-        }
         console.log("hexPixelData: " + hexPixelData[x]);
     }
 
-    for (var x = 0; x < hexPixelData.length; x++) {
+    for (var x = 0; x < decimalPixelData.length; x++) {
         for (var y = 0; y < hexPixelData[x].length; y = y + 8) {
             var slicey = hexPixelData[x].slice(y, y + 8);
             console.log("slicey: " + slicey);
+	    console.log("hexPixelData: " + hexPixelData[x]);
             var colourindex = slicey.slice(0, 2);
             if (colourindex == "00") {
                 colourindex = 0;
@@ -253,17 +250,21 @@ if (decimalPixelData.length != 0) {
                 colourindex = hexToDec("0x" + colourindex);
             }
             var group_position = slicey.slice(2, 6);
+	    console.log("hexGroupPosition: " + group_position);
             if (group_position == "00") {
                 group_position = 0;
             } else {
                 group_position = parseInt(hexToDec("0x" + group_position));
             }
-            var pixelindex = slicey.slice(7, 8);
+	    console.log("group_position: " + group_position);
+            var pixelindex = slicey.slice(6, 8);
+	    console.log("pixelindex: " + pixelindex);
             if (pixelindex == "00") {
                 pixelindex = 0;
             } else {
-                pixelindex = parseInt(hexToDec("0x" + pixelindex));
+                pixelindex = parseInt(hexToDec( pixelindex));
             }
+	    console.log("decpixelindex: " + pixelindex);
             if (hexColorIndexString[colourindex * 4] != undefined) {
                 console.log("in!");
                 var rgbColors = getColors("0x" + hexColorIndexString.substr(colourindex * 4, 4));
@@ -275,17 +276,21 @@ if (decimalPixelData.length != 0) {
                 //get hexPixelGroupIndexesString string from x and y
                 //may need to substract 1 from stripnumber!
                 var position = (group_position * 32) + pixelindex;
-                console.log("group_position :" + group_position);
-                console.log("position: " + position);
+              //  console.log("group_position :" + group_position);
+              //  console.log("position: " + position);
                 subFinalArray.push(255);
                 subFinalArray.push(position);
                 finalArray.push(subFinalArray);
             } else {
-                document.getElementById("warning").innerHTML = "corrupt or misunderstood image data from Ethereum blockchain, cannot process";
-                console.log("ERROR LOG: " + hexPixelData[x][y]);
-                console.log(hexColorIndexString.length);
-                console.log("x" + x);
-                console.log("y" + y);
+	    setTimeout(function() {document.getElementById("response").innerHTML = "problems parsing PixelData array, may not have rendered correctly or at all";  },1000);
+                console.log("ERROR LOG: cannot find colourindex in hexcolourIndexString");
+                console.log("ERROR, hexColorIndexString!: " + hexColorIndexString);
+	        console.log("ERROR, colourindex!: " + colourindex);
+                console.log("ERROR, hexColorIndexString length: " + hexColorIndexString.length);
+	        console.log("ERROR, slicey: " + slicey);
+	        console.log("ERROR, hexPixelData row: " + hexPixelData[x]);
+                console.log("ERROR, hexPixelData row number: " + x);
+                console.log("ERROR, position in hexPixelData row: " + y);
                 break;
 
             }
@@ -304,6 +309,7 @@ if (decimalPixelData.length != 0) {
 
 //beginning of pixel groups
 if (decimalPixelGroups.length != 0) {
+	    console.log("there are some!");
     //convert decimalPixelgroups to hex, and leftpad them
     for (var x = 0; x < decimalPixelGroups.length; x++) {
         hexPixelGroups.push(decToHex(decimalPixelGroups[x]));
@@ -313,7 +319,7 @@ if (decimalPixelGroups.length != 0) {
             hexPixelGroups[x] = "0" + hexPixelGroups[x];
             difference--;
         }
-        //  console.log("hexPixelGroups: " + hexPixelGroups[x]);
+          console.log("hexPixelGroups: " + hexPixelGroups[x]);
     }
 
 
@@ -321,7 +327,7 @@ if (decimalPixelGroups.length != 0) {
     for (var x = 0; x < decimalPixelGroupIndexes.length; x++) {
         hexPixelGroupIndexes.push(decToHex(decimalPixelGroupIndexes[x]));
         hexPixelGroupIndexes[x] = hexPixelGroupIndexes[x].slice(2);
-        if (x != decimalPixelGroupIndexes.length - 1) {
+        if (x != decimalPixelGroupIndexes.length - 1 ) {
             var difference = 64 - hexPixelGroupIndexes[x].length;
             while (difference != 0) {
                 hexPixelGroupIndexes[x] = "0" + hexPixelGroupIndexes[x];
@@ -341,7 +347,7 @@ if (decimalPixelGroups.length != 0) {
         console.log("hexPixelGroupIndexes: " + hexPixelGroupIndexes[x]);
     }
     var hexPixelGroupIndexesString = hexPixelGroupIndexes.join('');
-    console.log("stringg: " + hexPixelGroupIndexesString);
+   // console.log("stringg: " + hexPixelGroupIndexesString);
 
 
     for (var x = 0; x < hexPixelGroups.length; x++) {
@@ -375,7 +381,7 @@ if (decimalPixelGroups.length != 0) {
                 subFinalArray.push(position);
                 finalArray.push(subFinalArray);
             } else {
-                document.getElementById("warning").innerHTML = "corrupt or misunderstood image data from Ethereum blockchain, cannot process";
+                document.getElementById("warning").innerHTML = "problems parsin colorIndex array, may not render correctly or at all";
                 console.log("ERROR LOG: " + hexPixelGroups[x][y]);
                 console.log(hexColorIndexString.length);
                 console.log("x" + x);
@@ -390,11 +396,11 @@ if (decimalPixelGroups.length != 0) {
     for (var x = 0; x < 20; x++) {
         // console.log("pixel groups" + finalArray[x]);
     }
-    console.log("length" + finalArray.length);
+//    console.log("length" + finalArray.length);
 
     //end up pixelgroups
 }
-if (decimalTransparentPixelGroups.length != 0) {
+if (decimalTransparentPixelGroups.length != 0 ) {
     //convert decimaltransparentpixelgroups to hex, and leftpad them
     for (var x = 0; x < decimalTransparentPixelGroups.length; x++) {
         hexTransparentPixelGroups.push(decToHex(decimalTransparentPixelGroups[x]));
@@ -404,14 +410,14 @@ if (decimalTransparentPixelGroups.length != 0) {
             hexTransparentPixelGroups[x] = "0" + hexTransparentPixelGroups[x];
             difference--;
         }
-        console.log("hexTransparentPixelGroups: " + hexTransparentPixelGroups[x]);
+        //console.log("hexTransparentPixelGroups: " + hexTransparentPixelGroups[x]);
     }
 
     //convert decimaltransparentpixelgroupsindexes to hex, and leftpad them
     for (var x = 0; x < decimalTransparentPixelGroupIndexes.length; x++) {
         hexTransparentPixelGroupIndexes.push(decToHex(decimalTransparentPixelGroupIndexes[x]));
         hexTransparentPixelGroupIndexes[x] = hexTransparentPixelGroupIndexes[x].slice(2);
-        if (x != decimalTransparentPixelGroupIndexes.length - 1) {
+        if (x != decimalTransparentPixelGroupIndexes.length - 1 ) {
             var difference = 64 - hexTransparentPixelGroupIndexes[x].length;
             while (difference != 0) {
                 hexTransparentPixelGroupIndexes[x] = "0" + hexTransparentPixelGroupIndexes[x];
@@ -429,10 +435,10 @@ if (decimalTransparentPixelGroups.length != 0) {
                 hexTransparentPixelGroupIndexes[x] = "0" + hexTransparentPixelGroupIndexes[x];
             }
         }
-        console.log("hexTransparentPixelGroupIndexes: " + hexTransparentPixelGroupIndexes[x]);
+     //   console.log("hexTransparentPixelGroupIndexes: " + hexTransparentPixelGroupIndexes[x]);
     }
     var hexTransparentPixelGroupIndexesString = hexTransparentPixelGroupIndexes.join('');
-    console.log("stringg: " + hexTransparentPixelGroupIndexesString);
+  //  console.log("stringg: " + hexTransparentPixelGroupIndexesString);
 
     //finalArray to output transparentpixelgroups and transparentpixelgroupsindexes
     //iterate through characters in hexTransparentPixelGroups
@@ -471,7 +477,7 @@ if (decimalTransparentPixelGroups.length != 0) {
                 subFinalArray.push(position);
                 finalArray.push(subFinalArray);
             } else {
-                document.getElementById("warning").innerHTML = "corrupt or misunderstood image data from Ethereum blockchain, cannot process";
+                document.getElementById("warning").innerHTML = "problems parsing transparentPixelData array, may not display correctl, if at all";
                 console.log("ERROR LOG: " + hexTransparentPixelGroups[x][y]);
                 console.log(hexColorIndexString.length);
                 console.log("x" + x);
@@ -483,10 +489,10 @@ if (decimalTransparentPixelGroups.length != 0) {
         }
 
     }
-    for (var x = 0; x < 20; x++) {
-        console.log("transparent pixel groups" + finalArray[x]);
+    for (var x = 0; x < 10; x++) {
+      //  console.log("transparent pixel groups" + finalArray[x]);
     }
-    console.log("length" + finalArray.length);
+ //   console.log("length" + finalArray.length);
 
     //closing tag forr transparentpixelgroups
 }
@@ -536,12 +542,12 @@ wss.addEventListener("message", e => {
 //	console.log(e.data);
 //	console.log(typeof responsee);
 //	console.log(responsee);
-	console.log(responsee["response"]);
+//	console.log(responsee["response"]);
 	if (responsee["response"] == "error") {
 	document.getElementById("response").innerHTML = responsee["value"];
         setTimeout(function() {document.getElementById("response").innerHTML = "";  },3000);
 	} else if (responsee["response"] == "singleRawImageData") {
-	document.getElementById("response").innerHTML = JSON.stringify(responsee);      
+//	document.getElementById("response").innerHTML = JSON.stringify(responsee);      
 		
 		
 		//PLUG IN VALUES HEEEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!
