@@ -16,7 +16,7 @@ margin-bottom:9px;
     <div style="margin-left:calc(50vw - 100px);position:relative;top:-30px;">Enter an image ID: (1 - 209)</div>
     <input style="display:inline-block;margin-left:calc(50vw - 130px);position:relative;top:-20px;" id = "answer" type = "text"> </input> 
     <button style="display:inline-block;position:relative;top:-20px;" id = "answerbutton"> Submit </button><div style="width:200px;display:inline-block;margin-left:20px;vertical-align:top;position:relative;top:-20px;margin-right:0px;" id="warning"></div>
-    <div class="headers" id = "response"> </div> 
+    <div class="headers" id = "response">. </div> 
 	   </div>
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"> </script><script>
 
@@ -165,44 +165,22 @@ function convertStringToHex(str) {
     return "\\u" + arr.join("\\u");
 }
 
-//declare variables
-var decimalColorIndex = [];
-var hexColorIndex = [];
-var hexColorIndexString = "";
-var decimalPixelGroups = [];
-var hexpixelGroups = [];
-var decimalTransparentPixelGroups = [];
-var hexTransparentPixelGroups = [];
-var decimalTransparentPixelGroupIndexes = [];
-var hexTransparentPixelGroupIndexes = [];
-var decimalPixelGroups = [];
-var hexPixelGroups = [];
-var decimalPixelGroupIndexes = [];
-var hexPixelGroupIndexes = [];
-var decimalPixelData = [];
-var hexPixelData = [];
-var finalArray = [];
 
 //declare arrays
-decimalColorIndex = ["50654763755424210328672425327695615307906252058919690782771433632062"];
+var finalArray = [];
+//decimalColorIndex = ["50654763755424210328672425327695615307906252058919690782771433632062"];
 
-decimalPixelData = [
-    "650869216450885381842794140471645523731727370840522625210399475703437402376",
-    "1104507469932510824869762672892436606713942292148051592307742111968340828423",
-    "257266029179750072068322184028890766890969877420580281320249385225"
-];
-decimalTransparentPixelGroups = [
-    "3547551543381039034383664699734519055362002671414524853577384928774979584",
-    "41599411626257476698747227190631632426829657449030719785609788613722112",
-    "13857624037477524919099817758309175555578154406742367724197097601236992",
-    "3547497833697698006334470927222211626071888087999105701617075544483954688",
-    "55214603480481032008509109682344702375130587380518920463713671124615168"
-];
-decimalTransparentPixelGroupIndexes = [
-    "531883105784607723844129"
-];
-
-
+function drawNFT(decimalColorIndex,decimalPixelGroups,decimalTransparentPixelGroups,decimalTransparentPixelGroupIndexes,decimalPixelGroupIndexes,decimalPixelData) {
+	    console.log("drawing single NFT");
+//declare variables
+var hexColorIndex = [];
+var hexColorIndexString = "";
+var hexpixelGroups = [];
+var hexTransparentPixelGroups = [];
+var hexTransparentPixelGroupIndexes = [];
+var hexPixelGroups = [];
+var hexPixelGroupIndexes = [];
+var hexPixelData = [];
 //convert declared arrays to hexidemimal while iterating through:
 //decimalColorIndex
 //decimalTransparentPixelGroups
@@ -512,6 +490,7 @@ if (decimalTransparentPixelGroups.length != 0) {
 
     //closing tag forr transparentpixelgroups
 }
+	    }
 
 //       DRAW THE IMAGE ON HTML5 CANVAS
 function setup() {
@@ -542,7 +521,8 @@ function answerbuttonfunc() {
 		document.getElementById("warning").innerHTML = "too big of an input";
 	    setTimeout(function() {document.getElementById("warning").innerHTML = "";  },3000);
 	    } else {
-    		wss.send(document.getElementById("answer").value);
+		var sending = {selection:"getsingleID",value:document.getElementById("answer").value}
+    		wss.send(JSON.stringify(sending));
 	    }
 
 }
@@ -551,7 +531,26 @@ var answerbuttonvar = document.getElementById("answerbutton");
 answerbuttonvar.addEventListener('click', answerbuttonfunc, false);
 
 wss.addEventListener("message", e => {
-    document.getElementById("response").innerHTML = e.data;
+//    document.getElementById("response").innerHTML = JSON.parse(e.data);
+	var responsee = JSON.parse(e.data);
+//	console.log(e.data);
+//	console.log(typeof responsee);
+//	console.log(responsee);
+	console.log(responsee["response"]);
+	if (responsee["response"] == "error") {
+	document.getElementById("response").innerHTML = responsee["value"];
+        setTimeout(function() {document.getElementById("response").innerHTML = "";  },3000);
+	} else if (responsee["response"] == "singleRawImageData") {
+	document.getElementById("response").innerHTML = JSON.stringify(responsee);      
+		
+		
+		//PLUG IN VALUES HEEEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!
+	drawNFT(responsee["colorIndex"],responsee["pixelGroups"],responsee["transparentPixelGroups"],responsee["transparentPixelGroupIndexes"],responsee["pixelGroupIndexes"],responsee["pixelData"]);
+
+	} else {
+        document.getElementById("response").innerHTML = "undocumented error";	
+        setTimeout(function() {document.getElementById("response").innerHTML = "";  },3000);
+	}
 });
 
 </script>
