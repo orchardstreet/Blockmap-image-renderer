@@ -3,7 +3,7 @@ This project is unfinished, don't use it
 # Blockmap-image-renderer
 Converts Uint32 Arrays on Ethereum blockchain to an HTML5 canvas image using Murall's innovative Blockmap format
 
-Runs on a server, use linux desktop terminal, Windows-Subsystem for linux or a VPS.  Run the following command to install:
+Runs on a server, use linux desktop terminal, Windows-Subsystem for linux or a VPS.  Run the following commands to install:
 # Installation
 Configure your server to serve index.html first, and then upgrade connections to your-site-name.com/socket to a websockets connection
 
