@@ -83,11 +83,9 @@ trying: try {
 	if (!isNaN(IDD) && IDD < 1000000000) {
         var result2 = await connection2.query("select * from data where id=" + IDD);
         if (await Object.values(result2[0])[0] == undefined) {
-	    console.log("couldn't parse [0][0]");
             latestMysqlID = -1;
 	    break trying;
         } else {
-	    console.log("yes");
 	    var result3 = Object.values(Object.values(result2[0])[0])[1].toString('utf-8');
 	   // console.log("could parse [0][0], which is: " + typeof result2[1].keys()); 
 	    gotit = 1;
@@ -99,12 +97,10 @@ trying: try {
         throw err;
     } finally {
         await connection2.release();
-        console.log("\nDatabase connection 1 is closed");
-	console.log("gotit: " + gotit);
+        console.log("\nDatabase connection 2 is closed");
 	if (gotit == 1) {
 	return result3;
 	} else {
-	console.log("Didn't get anything");
 	return 0;
 	}
     }
@@ -120,21 +116,14 @@ socketServer.on('connection', (socketClient) => {
         console.log('connected');
         console.log('client Set length: ',socketServer.clients.size);
         socketClient.on("message", async function( data ) {
-        console.log("Received data of length: " + data.length);
-		console.log(typeof data);
 		var reception = JSON.parse(data);
 		var selection = reception["selection"];
 		var IDnumber = reception["value"];
-		console.log(selection);
-		console.log(typeof IDnumber);
 		IDnumber = parseInt(IDnumber);
-		console.log(IDnumber);
 	if (selection == "getsingleID" && IDnumber < 1000000000) {
-		console.log("passed first if");
 		if (!isNaN(IDnumber)) {
-			console.log("passed second if");
         		var result = await getJavascriptObjectofID(IDnumber);
-			console.log(result);
+	//		console.log(result);
 			if (result != "0") {
 		        var replacement = '"response":"singleRawImageData",';
 			var position = 1;
