@@ -30,7 +30,7 @@ exit;
 
 vi .env   #enter the following in the .env file and then save the file in the main directory:
 
-------goes in .env---------
+-----------------------------
 
 DB_HOST='your database host'
 
