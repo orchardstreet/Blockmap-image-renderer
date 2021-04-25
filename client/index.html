@@ -17,86 +17,12 @@ margin-bottom:9px;
     <button style="display:inline-block;position:relative;top:-20px;" id = "answerbutton"> Submit </button><div style="width:200px;display:inline-block;margin-left:20px;vertical-align:top;position:relative;top:-20px;margin-right:0px;" id="warning"></div>
     <div class="headers" id = "response">. </div> 
 	   </div>
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"> </script><script type="text/javascript" src="decToHex.js"></script><script type="text/javascript" src="render.js"></script><script>
-    
-//websocket connection
-//put name of your site below
-const wss = new WebSocket('ws://sonorousprograms.com/socket');
-wss.onopen = () => {
-    console.log('Now connected');
-    document.getElementById('notif').innerHTML = "Connected";
-    document.getElementById('notif').style.color = "green";
-    document.getElementById('notif').style.top = "50px";
-    document.getElementById('notif').style.lineHeight = "18px";
-};
-    
-
-
-
-
-//       DRAW THE IMAGE ON HTML5 CANVAS
-function setup() {
-    createCanvas(2048, 1024);
-    pixelDensity(1);
-    background(115);
-}
-
-function draw() {
-    loadPixels()
-    for (var i = 0; i < finalArray.length; i++) {
-        if (finalArray[i][3] != 0) {
-            var index = finalArray[i][4] * 4;
-            pixels[index] = finalArray[i][0];
-            pixels[index + 1] = finalArray[i][1];
-            pixels[index + 2] = finalArray[i][2];
-            pixels[index + 3] = finalArray[i][3];
-        }
-    }
-
-
-    updatePixels();
-}
-
-function answerbuttonfunc() {
-    var answerr = document.getElementById("answer").value;
-	    if (answerr.length > 30) {
-		document.getElementById("warning").innerHTML = "too big of an input";
-	    setTimeout(function() {document.getElementById("warning").innerHTML = "";  },3000);
-	    } else {
-		var sending = {selection:"getsingleID",value:document.getElementById("answer").value}
-    		wss.send(JSON.stringify(sending));
-	    }
-
-}
-
-var answerbuttonvar = document.getElementById("answerbutton");
-answerbuttonvar.addEventListener('click', answerbuttonfunc, false);
-
-wss.addEventListener("message", e => {
-//    document.getElementById("response").innerHTML = JSON.parse(e.data);
-	var responsee = JSON.parse(e.data);
-//	console.log(e.data);
-//	console.log(typeof responsee);
-//	console.log(responsee);
-//	console.log(responsee["response"]);
-	if (responsee["response"] == "error") {
-	document.getElementById("response").innerHTML = responsee["value"];
-        setTimeout(function() {document.getElementById("response").innerHTML = "";  },3000);
-	} else if (responsee["response"] == "singleRawImageData") {
-//	document.getElementById("response").innerHTML = JSON.stringify(responsee);      
-		
-		
-		//PLUG IN VALUES HEEEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!
-	renderBlockmap(responsee["colorIndex"],responsee["pixelGroups"],responsee["transparentPixelGroups"],responsee["transparentPixelGroupIndexes"],responsee["pixelGroupIndexes"],responsee["pixelData"]);
-
-	} else {
-        document.getElementById("response").innerHTML = "undocumented error";	
-        setTimeout(function() {document.getElementById("response").innerHTML = "";  },3000);
-	}
-});
-
-</script>
-
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script>
+    <script type="text/javascript" src="decToHex.js"></script>
+    <script type="text/javascript" src="render.js"></script>
+    <script type="text/javascript" src="websocket.js"></script>
+    <script type="text/javascript" src="drawToCanvas.js"></script>
+    <script type="text/javascript" src="userInput.js"></script>
 
 </body> 
 </html>
