@@ -26,7 +26,7 @@ wss.addEventListener("message", e => {
 		
 		
 		//PLUG IN VALUES HEEEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!
-        worker = new Worker('render-work.js');
+        worker = new Worker('render-worker.js');
 	var tosend = [responsee["colorIndex"],responsee["pixelGroups"],responsee["transparentPixelGroups"],responsee["transparentPixelGroupIndexes"],responsee["pixelGroupIndexes"],responsee["pixelData"]];
 	document.getElementById("response").innerHTML = "rendering";
 	worker.postMessage(tosend);
