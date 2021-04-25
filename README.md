@@ -6,7 +6,7 @@ Runs on a server.  Use a linux desktop terminal, WSL, or a linux VPS.  Run the f
 # Installation
 Configure your server to serve index.html first, and then upgrade connections to your-site-name.com/socket to a websockets connection
 
-put the name-of-your-site.com/socket on line 13 of index.html
+put the name-of-your-site.com/socket on line 3 of client/websocket.js
 
 sudo apt install nodejs npm mariadb-server
 
