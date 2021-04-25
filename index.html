@@ -99,25 +99,6 @@ function multiplyByNumber(num, x, base) {
 
     return result;
 }
-// Returns a*x, where x is an array of decimal digits and a is an ordinary
-// JavaScript number. base is the number base of the array x.
-function multiplyByNumber(num, x, base) {
-    if (num < 0) return null;
-    if (num == 0) return [];
-
-    var result = [];
-    var power = x;
-    while (true) {
-        if (num & 1) {
-            result = add(result, power, base);
-        }
-        num = num >> 1;
-        if (num === 0) break;
-        power = add(power, power, base);
-    }
-
-    return result;
-}
 
 function parseToDigitsArray(str, base) {
     var digits = str.split('');
@@ -159,14 +140,6 @@ function hexToDec(hexStr) {
     if (hexStr.substring(0, 2) === '0x') hexStr = hexStr.substring(2);
     hexStr = hexStr.toLowerCase();
     return convertBase(hexStr, 16, 10);
-}
-
-function convertStringToHex(str) {
-    var arr = [];
-    for (var i = 0; i < str.length; i++) {
-        arr[i] = ("00" + str.charCodeAt(i).toString(16)).slice(-4);
-    }
-    return "\\u" + arr.join("\\u");
 }
 
 
