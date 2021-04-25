@@ -1,28 +1,147 @@
-<!DOCTYPE html >
-    <html>
-	    <head>
-<style>
-.headers {
-margin-bottom:9px;
-}
-</style>
-	    </head>
-    <body>
-	    <div style="position:relative;height:70px;margin-bottom:5px;">
-		    <div style="position:relative;top:20px;left:25px;padding-left:24px;box-sizing:border-box;font-weight:bold;text-align:left;width:120px;height:70px;background-color:#fafafa;line-height:20px;border:1px solid #ccc;display:inline-block;float:left;border-radius:20px;padding-top:4px;">Blockmap<br>Image<br>Renderer </div><div style="box-sizing:border-box;text-align:center;background-color:#fafafa;padding-top:2px;padding-right:20px;padding-left:20px;position:relative;top:40px;margin-right:20px;border-radius:10px;float:right;color:green;border:1px solid #ccc;font-weight:bold;height:auto;width:auto;line-height:17px;padding-bottom:3px;display:inline-block;vertical-align:top;color:red;font-size:12px;" id="notif">Not connected<br>Notify site owner</div>
-	    </div>
-	   <div style="position:relative;">
-    <div style="margin-left:calc(50vw - 100px);position:relative;top:-30px;">Enter an image ID: (1 - 209)</div>
-    <input style="display:inline-block;margin-left:calc(50vw - 130px);position:relative;top:-20px;" id = "answer" type = "text"> </input> 
-    <button style="display:inline-block;position:relative;top:-20px;" id = "answerbutton"> Submit </button><div style="width:200px;display:inline-block;margin-left:20px;vertical-align:top;position:relative;top:-20px;margin-right:0px;" id="warning"></div>
-    <div class="headers" id = "response">. </div> 
-	   </div>
-    <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script>
-    <script type="text/javascript" src="decToHex.js"></script>
-    <script type="text/javascript" src="render.js"></script>
-    <script type="text/javascript" src="websocket.js"></script>
-    <script type="text/javascript" src="drawToCanvas.js"></script>
-    <script type="text/javascript" src="userInput.js"></script>
+const { abi1, abi2, address1, address2, url } = require('./blockchaincredentials.js');
+const dotenv = require('dotenv').config();
+var Web3 = require('web3');
+var web3 = new Web3(url);
+var contract1 = new web3.eth.Contract(abi1, address1);
+var contract2 = new web3.eth.Contract(abi2, address2);
+const mysql = require('mysql2/promise');
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    waitForConnections: process.env.DB_WAITCON,
+    connectionLimit: process.env.DB_CONLIMIT,
+    queueLimit: process.env.DB_QUEUELIMIT
+});
 
-</body> 
-</html>
+function getRemoteTokenTransactionDataForId(tokenId) {
+    return new Promise(function(resolve, reject) {
+        contract2
+            .getPastEvents('Painted', {
+                filter: {
+                    tokenId: web3.utils.toBN(tokenId)
+                },
+                fromBlock: 'earliest',
+                toBlock: 'latest'
+            })
+            .then(async function(events) {
+                if (events.length == 0) {
+                    reject('No events found')
+                } else {
+                    resolve(events[0].returnValues)
+                }
+            })
+    })
+}
+
+async function syncDatabaseToBlockchainData() {
+    var latestMysqlID = 0;
+    var latestBlockchainID = await contract1.methods.totalSupply().call();
+    latestBlockchainID--;
+    const connection1 = await pool.getConnection();
+    await connection1.beginTransaction();
+    try {
+        console.log("\nConnected to database\n");
+        var result1 = await connection1.query("select * from data where id=(select max(id) from data)");
+        if (Object.values(result1[0])[0] == undefined) {
+            latestMysqlID = -1;
+        } else {
+            latestMysqlID = Object.values(result1[0])[0].id;
+        }
+        console.log(latestMysqlID);
+        console.log(latestBlockchainID);
+        var i = latestMysqlID + 1;
+        for (; i < latestBlockchainID + 1; i++) {
+            var exists = await connection1.query("SELECT EXISTS(SELECT * FROM data WHERE id = " + i + ")");
+            console.log(parseInt(Object.values(Object.values(exists[0])[0])));
+            if (parseInt(Object.values(Object.values(exists[0])[0])) == 0) {
+                var temp = await getRemoteTokenTransactionDataForId(i);
+                temp = JSON.stringify(temp);
+                console.log("inserting ID:  " + i + " into database");
+                await connection1.query("insert into data (id,content) values (" + i + ",'" + temp + "')");
+            }
+        }
+        await connection1.commit();
+    } catch (err) {
+        await connection1.rollback();
+        throw err;
+    } finally {
+        await connection1.release();
+        console.log("\nDatabase connection 1 is closed");
+    }
+}
+
+
+async function getJavascriptObjectofID(IDD) {
+    const connection2 = await pool.getConnection();
+    await connection2.beginTransaction();
+trying: try {
+	var gotit = 0;
+        console.log("\nConnected to database\n");
+	IDD = parseInt(IDD);
+	if (!isNaN(IDD) && IDD < 1000000000) {
+        var result2 = await connection2.query("select * from data where id=" + IDD);
+        if (await Object.values(result2[0])[0] == undefined) {
+            latestMysqlID = -1;
+	    break trying;
+        } else {
+	    var result3 = Object.values(Object.values(result2[0])[0])[1].toString('utf-8');
+	   // console.log("could parse [0][0], which is: " + typeof result2[1].keys()); 
+	    gotit = 1;
+            await connection2.commit();
+        }
+	}
+    } catch (err) {
+        await connection2.rollback();
+        throw err;
+    } finally {
+        await connection2.release();
+        console.log("\nDatabase connection 2 is closed");
+	if (gotit == 1) {
+	return result3;
+	} else {
+	return 0;
+	}
+    }
+}
+syncDatabaseToBlockchainData();
+
+const WebSocket = require('ws');
+const host = '127.0.0.1';
+const port = 8082;
+const socketServer = new WebSocket.Server({ host, port });
+var userchosenID = 0;
+socketServer.on('connection', (socketClient) => {
+        console.log('connected');
+        console.log('client Set length: ',socketServer.clients.size);
+        socketClient.on("message", async function( data ) {
+		var reception = JSON.parse(data);
+		var selection = reception["selection"];
+		var IDnumber = reception["value"];
+		IDnumber = parseInt(IDnumber);
+	if (selection == "getsingleID" && IDnumber < 1000000000) {
+		if (!isNaN(IDnumber)) {
+        		var result = await getJavascriptObjectofID(IDnumber);
+	//		console.log(result);
+			if (result != "0") {
+		        var replacement = '"response":"singleRawImageData",';
+			var position = 1;
+			var output = [result.slice(0,position),replacement,result.slice(position)].join('');
+			socketClient.send(output);
+			} else {
+			var warningg = {response:"error",value:"Cannot find the image, probably out of range"};
+        		socketClient.send(JSON.stringify(warningg));
+			}
+		}
+	}
+	});
+
+
+        socketClient.on('close', (socketClient) => {
+                console.log('closed');
+                console.log('Number of clients: ', socketServer.clients.size);
+
+        });
+
+});
