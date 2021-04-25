@@ -26,8 +26,6 @@ use test;
 
 create table data(id INT, content LONGBLOB);
 
-flush privileges;
-
 exit;
 
 vi .env   #enter the following in the .env file and then save the file in the main directory:
