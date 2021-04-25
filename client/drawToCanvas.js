@@ -7,13 +7,13 @@ function setup() {
 
 function draw() {
     loadPixels()
-    for (var i = 0; i < finalArray.length; i++) {
-        if (finalArray[i][3] != 0) {
-            var index = finalArray[i][4] * 4;
-            pixels[index] = finalArray[i][0];
-            pixels[index + 1] = finalArray[i][1];
-            pixels[index + 2] = finalArray[i][2];
-            pixels[index + 3] = finalArray[i][3];
+    for (var i = 0; i < thefinalArray.length; i++) {
+        if (thefinalArray[i][3] != 0) {
+            var index = thefinalArray[i][4] * 4;
+            pixels[index] = thefinalArray[i][0];
+            pixels[index + 1] = thefinalArray[i][1];
+            pixels[index + 2] = thefinalArray[i][2];
+            pixels[index + 3] = thefinalArray[i][3];
         }
     }
 
