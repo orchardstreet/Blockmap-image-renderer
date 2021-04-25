@@ -310,4 +310,5 @@ if (decimalTransparentPixelGroups.length != 0 ) {
 
     //closing tag forr transparentpixelgroups
 }
+	//closing tag forr renderblockmap
 	    }
