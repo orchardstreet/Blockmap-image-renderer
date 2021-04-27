@@ -315,6 +315,8 @@ if (decimalPixelGroups.length != 0) {
 
     //end up pixelgroups
 }
+	
+//beginning of transparentPixelGroups
 if (decimalTransparentPixelGroups.length != 0 ) {
     //convert decimaltransparentpixelgroups to hex, and leftpad them
     for (var x = 0; x < decimalTransparentPixelGroups.length; x++) {
@@ -397,9 +399,6 @@ if (decimalTransparentPixelGroups.length != 0 ) {
 
         }
 
-    }
-    for (var x = 0; x < 10; x++) {
-      //  console.log("transparent pixel groups" + finalArray[x]);
     }
  //   console.log("length" + finalArray.length);
 
