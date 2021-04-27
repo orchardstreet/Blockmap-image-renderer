@@ -196,7 +196,6 @@ if (decimalPixelData.length != 0) {
                 subFinalArray.push(rgbColors[1]);
                 subFinalArray.push(rgbColors[2]);
                 //get hexPixelGroupIndexesString string from x and y
-                //may need to substract 1 from stripnumber!
                 var position = (group_position * 32) + pixelindex;
               //  console.log("group_position :" + group_position);
               //  console.log("position: " + position);
@@ -292,7 +291,6 @@ if (decimalPixelGroups.length != 0) {
                 //get hexPixelGroupIndexesString string from x and y
                 var stripnumber = hexToDec(hexPixelGroupIndexesString.substr(x * 4, 4));
                 var pixelinstrip = Math.floor(y / 2);
-                //may need to substract 1 from stripnumber!
                 var position = (stripnumber) * 32 + pixelinstrip;
                 subFinalArray.push(255);
                 subFinalArray.push(position);
@@ -379,7 +377,6 @@ if (decimalTransparentPixelGroups.length != 0 ) {
                 //get hexTransparentPixelGroupIndexesString string from x and y
                 var stripnumber = hexToDec(hexTransparentPixelGroupIndexesString.substr(x * 4, 4));
                 var pixelinstrip = Math.floor(y / 2);
-                //may need to substract 1 from stripnumber!
                 var position = stripnumber * 32 + pixelinstrip;
                 if (thecolor == 0) {
                     subFinalArray[3] = 0;
