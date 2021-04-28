@@ -1,3 +1,4 @@
+
 <!DOCTYPE html >
     <html>
 	    <head>
@@ -5,6 +6,7 @@
 .headers {
 margin-bottom:9px;
 }
+body{margin:0;overflow:hidden}
 </style>
 	    </head>
     <body>
@@ -16,14 +18,54 @@ margin-bottom:9px;
     <input style="display:inline-block;margin-left:calc(50vw - 130px);position:relative;top:-20px;" id = "answer" type = "text"> </input> 
     <button style="display:inline-block;position:relative;top:-20px;" id = "answerbutton"> Submit </button><div style="width:200px;display:inline-block;margin-left:20px;vertical-align:top;position:relative;top:-20px;margin-right:0px;" id="warning"></div>
     <div class="headers" id = "response"><br></div> 
+    <div style="margin-bottom:10px;max-width:50vw;min-height:155px;font-size:16px;background-color:#fafafa;border:1px solid #ccc;box-sizing:border-box;border-radius:10px;padding:20px 0px 0px 0px;text-align:center;" id = "infos">RGB-565 colors in image:<div style="overflow:auto;max-height:72px;margin-top:20px;margin-bottom:10px;"><div id="innerinfos" style="text-align:center;font-family:monospace;margin-top:0px;padding:0px 20px 0px 20px;"></div></div></div>
 	   </div>
 	<script type='text/javascript' > 
 		  var thefinalArray = []; 
+//       DRAW THE IMAGE ON HTML5 CANVAS
+function setup() {
+    createCanvas(2048, 1024);
+    pixelDensity(1);
+    background(115);
+   noLoop();
+}
+
+function windowResized() { 
+
+}
+function draw() {
+    loadPixels()
+    for (var i = 0; i < thefinalArray.length; i++) {
+        if (thefinalArray[i][3] != 0) {
+            var index = thefinalArray[i][4] * 4;
+            pixels[index] = thefinalArray[i][0];
+            pixels[index + 1] = thefinalArray[i][1];
+            pixels[index + 2] = thefinalArray[i][2];
+            pixels[index + 3] = thefinalArray[i][3];
+        }
+    }
+
+
+    updatePixels();
+}
 	</script>
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script>
     <script type="text/javascript" src="websocket.js"></script>
-    <script type="text/javascript" src="drawToCanvas.js"></script>
     <script type="text/javascript" src="userInput.js"></script>
+    <script src="hello.js"></script>
+	<script>
+	var decimalTransparentPixelGroups = [
+			    377078862888227322197610963000877773354147183132929,
+			    454086624460063511464984254936031011189294057512315932668752017228564529152,
+			    375611652173011975087909381875825410811545209929985,
+			    454086624460063511464984254936031011189299249809174467496380547724893749248,
+			    749756071330063404514894409352142902055712422166785,
+			    906406374790088072818527886785008925168834986579591800281000187259101642752,
+			    377073153897456493165789871317449980360235677712641]
+        var ok = Uint32Array(decimalTransparentPixelGroups);
+	console.log("reeee: " + ok);
+	</script>
 
 </body> 
 </html>
+
