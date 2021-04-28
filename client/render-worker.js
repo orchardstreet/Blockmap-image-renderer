@@ -2,22 +2,6 @@ self.addEventListener('message',(ev) => {
 let dataa = ev.data;
 self.postMessage(['publicnotice','rendering: started webworker']);
 
-//decToHex function
-//From http://www.danvk.org/hex2dec.html
-/**
- * A function for converting hex <-> dec w/o loss of precision.
- *
- * The problem is that parseInt("0x12345...") isn't precise enough to convert
- * 64-bit integers correctly.
- *
- * Internally, this uses arrays to encode decimal digits starting with the least
- * significant:
- * 8 = [8]
- * 16 = [6, 1]
- * 1024 = [4, 2, 0, 1]
- */
-// Adds two arrays for the given base (10 or 16), returning the result.
-// This turns out to be the only "primitive" operation we need.
 function renderPixelGroupsToCanvasArray(pixelGroups,pixelGroupIndexesString,hexColorIndexString,transparent) {
     for (var x = 0; x < pixelGroups.length; x++) {
         for (var y = 0; y < pixelGroups[x].length; y = y + 2) {
@@ -58,6 +42,22 @@ function renderPixelGroupsToCanvasArray(pixelGroups,pixelGroupIndexesString,hexC
     }
 
 }
+	//decToHex function
+//From http://www.danvk.org/hex2dec.html
+/**
+ * A function for converting hex <-> dec w/o loss of precision.
+ *
+ * The problem is that parseInt("0x12345...") isn't precise enough to convert
+ * 64-bit integers correctly.
+ *
+ * Internally, this uses arrays to encode decimal digits starting with the least
+ * significant:
+ * 8 = [8]
+ * 16 = [6, 1]
+ * 1024 = [4, 2, 0, 1]
+ */
+// Adds two arrays for the given base (10 or 16), returning the result.
+// This turns out to be the only "primitive" operation we need.
 function add(x, y, base) {
     var z = [];
     var n = Math.max(x.length, y.length);
