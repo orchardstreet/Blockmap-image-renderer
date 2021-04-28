@@ -18,6 +18,46 @@ self.postMessage(['publicnotice','rendering: started webworker']);
  */
 // Adds two arrays for the given base (10 or 16), returning the result.
 // This turns out to be the only "primitive" operation we need.
+function renderPixelGroupsToCanvasArray(pixelGroups,pixelGroupIndexesString,hexColorIndexString,transparent) {
+    for (var x = 0; x < pixelGroups.length; x++) {
+        for (var y = 0; y < pixelGroups[x].length; y = y + 2) {
+            var thecolor = pixelGroups[x].slice(y, y + 2);
+            if (thecolor == "00") {
+                thecolor = 0;
+            } else if (thecolor == undefined) {
+                //console.log("ERROR LOG: can't find hex color index in index array, out-of-bound on index array" + hexTransparentPixelGroups[x][y]);
+                break;
+            } else {
+                thecolor = hexToDec(thecolor);
+            }
+            if (hexColorIndexString[thecolor * 4] != undefined) {
+		var rgbColors = getColors("0x" + hexColorIndexString.substr(thecolor * 4, 4));
+                var subFinalArray = [];
+                subFinalArray.push(rgbColors[0]);
+                subFinalArray.push(rgbColors[1]);
+                subFinalArray.push(rgbColors[2]);
+                //get hexTransparentPixelGroupIndexesString string from x and y
+                var stripnumber = hexToDec(pixelGroupIndexesString.substr(x * 4, 4));
+                var pixelinstrip = Math.floor(y / 2);
+                var position = stripnumber * 32 + pixelinstrip;
+                if (thecolor == 0 && transparent == true) {
+                    subFinalArray[3] = 0;
+                } else {
+                    subFinalArray.push(255);
+                }
+                subFinalArray.push(position);
+                finalArray.push(subFinalArray);
+            } else {
+                //console.log("ERROR LOG: can't find hex color value in color array, out-of-bounds or invalid selection on color array" + hexTransparentPixelGroups[x][y]);
+                break;
+
+            }
+
+        }
+
+    }
+
+}
 function add(x, y, base) {
     var z = [];
     var n = Math.max(x.length, y.length);
@@ -126,10 +166,7 @@ var hexTransparentPixelGroupIndexes = [];
 var hexPixelGroups = [];
 var hexPixelGroupIndexes = [];
 var hexPixelData = [];
-//convert declared arrays to hexidemimal while iterating through:
-//decimalColorIndex
-//decimalTransparentPixelGroups
-//decimalTransparentPixelGroupIndexes
+
 for (var x = 0; x < decimalColorIndex.length; x++) {
     hexColorIndex.push(decToHex(decimalColorIndex[x]));
     //shave off first two characters off hexColorIndex, its uneeded
@@ -139,7 +176,6 @@ for (var x = 0; x < decimalColorIndex.length; x++) {
     if (remainder) {
         hexColorIndex[x] = leftpadwithzeros(4-remainder,hexColorIndex[x]);
     }
-   // console.log("hexColorIndexAFTER: " + hexColorIndex[x]);
 }
 //put all of hexColorIndex into single string
 hexColorIndexString = hexColorIndex.join('');
@@ -157,14 +193,11 @@ if (decimalPixelData.length != 0) {
 	if (remainder2) {
             hexPixelData[x] = leftpadwithzeros(8-remainder2,hexPixelData[x]);
 	}
-        //console.log("hexPixelData: " + hexPixelData[x]);
     }
 
     for (var x = 0; x < decimalPixelData.length; x++) {
         for (var y = 0; y < hexPixelData[x].length; y = y + 8) {
             var slicey = hexPixelData[x].slice(y, y + 8);
-            //console.log("slicey: " + slicey);
-	    //console.log("hexPixelData: " + hexPixelData[x]);
             var colourindex = slicey.slice(0, 2);
             if (colourindex == "00") {
                 colourindex = 0;
@@ -172,23 +205,18 @@ if (decimalPixelData.length != 0) {
                 colourindex = hexToDec("0x" + colourindex);
             }
             var group_position = slicey.slice(2, 6);
-	    //console.log("hexGroupPosition: " + group_position);
             if (group_position == "00") {
                 group_position = 0;
             } else {
                 group_position = parseInt(hexToDec("0x" + group_position));
             }
-	    //console.log("group_position: " + group_position);
             var pixelindex = slicey.slice(6, 8);
-	    //console.log("pixelindex: " + pixelindex);
             if (pixelindex == "00") {
                 pixelindex = 0;
             } else {
                 pixelindex = parseInt(hexToDec( pixelindex));
             }
-	    //console.log("decpixelindex: " + pixelindex);
             if (hexColorIndexString[colourindex * 4] != undefined) {
-                //console.log("in!");
                 var rgbColors = getColors("0x" + hexColorIndexString.substr(colourindex * 4, 4));
                 var subFinalArray = [];
 
@@ -196,35 +224,19 @@ if (decimalPixelData.length != 0) {
                 subFinalArray.push(rgbColors[1]);
                 subFinalArray.push(rgbColors[2]);
                 //get hexPixelGroupIndexesString string from x and y
+                //may need to substract 1 from stripnumber!
                 var position = (group_position * 32) + pixelindex;
-              //  console.log("group_position :" + group_position);
-              //  console.log("position: " + position);
                 subFinalArray.push(255);
                 subFinalArray.push(position);
                 finalArray.push(subFinalArray);
             } else {
 	    //setTimeout(function() {document.getElementById("response").innerHTML = "problems parsing PixelData array, may not have rendered correctly or at all";  },1000);
                 //console.log("ERROR LOG: cannot find colourindex in hexcolourIndexString");
-                //console.log("ERROR, hexColorIndexString!: " + hexColorIndexString);
-	       // console.log("ERROR, colourindex!: " + colourindex);
-               // console.log("ERROR, hexColorIndexString length: " + hexColorIndexString.length);
-	       // console.log("ERROR, slicey: " + slicey);
-	       // console.log("ERROR, hexPixelData row: " + hexPixelData[x]);
-               // console.log("ERROR, hexPixelData row number: " + x);
-               // console.log("ERROR, position in hexPixelData row: " + y);
                 break;
-
             }
-
-
-
         }
 
     }
-
-
-
-
 }
 
 
@@ -260,63 +272,15 @@ if (decimalPixelGroups.length != 0) {
 	    hexPixelGroupIndexes[x] = leftpadwithzeros(4-remainder3,hexPixelGroupIndexes[x]);
 	    }
         }
-        //console.log("hexPixelGroupIndexes: " + hexPixelGroupIndexes[x]);
     }
     var hexPixelGroupIndexesString = hexPixelGroupIndexes.join('');
-   // console.log("stringg: " + hexPixelGroupIndexesString);
+   renderPixelGroupsToCanvasArray(hexPixelGroups,hexPixelGroupIndexesString,hexColorIndexString,false);
+
+    //end of pixelgroups
 
 
-    for (var x = 0; x < hexPixelGroups.length; x++) {
-        for (var y = 0; y < hexPixelGroups[x].length; y = y + 2) {
-            var thecolor = hexPixelGroups[x].slice(y, y + 2);
-            if (thecolor == "00") {
-                thecolor = 0;
-            } else if (thecolor == undefined) {
-                //document.getElementById("warning").innerHTML = "can't find number for color index";
-                //console.log("ERROR LOG: " + hexPixelGroups[x][y]);
-                //console.log(hexColorIndexString.length);
-                //console.log("x" + x);
-                //console.log("y" + y);
-                break;
-            } else {
-                thecolor = hexToDec(thecolor);
-            }
-            if (hexColorIndexString[thecolor * 4] != undefined) {
-                var rgbColors = getColors("0x" + hexColorIndexString.substr(thecolor * 4, 4));
-                var subFinalArray = [];
-
-                subFinalArray.push(rgbColors[0]);
-                subFinalArray.push(rgbColors[1]);
-                subFinalArray.push(rgbColors[2]);
-                //get hexPixelGroupIndexesString string from x and y
-                var stripnumber = hexToDec(hexPixelGroupIndexesString.substr(x * 4, 4));
-                var pixelinstrip = Math.floor(y / 2);
-                var position = (stripnumber) * 32 + pixelinstrip;
-                subFinalArray.push(255);
-                subFinalArray.push(position);
-                finalArray.push(subFinalArray);
-            } else {
-                //document.getElementById("warning").innerHTML = "problems parsin colorIndex array, may not render correctly or at all";
-                //console.log("ERROR LOG: " + hexPixelGroups[x][y]);
-                //console.log(hexColorIndexString.length);
-                //console.log("x" + x);
-                //console.log("y" + y);
-                break;
-
-            }
-
-        }
-
-    }
-    for (var x = 0; x < 20; x++) {
-        // console.log("pixel groups" + finalArray[x]);
-    }
-//    console.log("length" + finalArray.length);
-
-    //end up pixelgroups
+//beginning of hexTransparentPixelGroups
 }
-	
-//beginning of transparentPixelGroups
 if (decimalTransparentPixelGroups.length != 0 ) {
     //convert decimaltransparentpixelgroups to hex, and leftpad them
     for (var x = 0; x < decimalTransparentPixelGroups.length; x++) {
@@ -327,7 +291,6 @@ if (decimalTransparentPixelGroups.length != 0 ) {
 	    var difference = 64 - length4;
 	    hexTransparentPixelGroups[x] = leftpadwithzeros(difference,hexTransparentPixelGroups[x]);
 	    }
-        //console.log("hexTransparentPixelGroups: " + hexTransparentPixelGroups[x]);
     }
 
     //convert decimaltransparentpixelgroupsindexes to hex, and leftpad them
@@ -347,65 +310,15 @@ if (decimalTransparentPixelGroups.length != 0 ) {
                 hexTransparentPixelGroupIndexes[x] = leftpadwithzeros(4-remainder4,hexTransparentPixelGroupIndexes[x]);
 	    }
         }
-     //   console.log("hexTransparentPixelGroupIndexes: " + hexTransparentPixelGroupIndexes[x]);
     }
     var hexTransparentPixelGroupIndexesString = hexTransparentPixelGroupIndexes.join('');
-  //  console.log("stringg: " + hexTransparentPixelGroupIndexesString);
 
-    //finalArray to output transparentpixelgroups and transparentpixelgroupsindexes
-    //iterate through characters in hexTransparentPixelGroups
-    //after find colorr index, find hex colorr in hexColorIndexString, and then find RGB in getColors function,
-    for (var x = 0; x < hexTransparentPixelGroups.length; x++) {
-        for (var y = 0; y < hexTransparentPixelGroups[x].length; y = y + 2) {
-            var thecolor = hexTransparentPixelGroups[x].slice(y, y + 2);
-            if (thecolor == "00") {
-                thecolor = 0;
-            } else if (thecolor == undefined) {
-                //document.getElementById("warning").innerHTML = "can't find number for color index";
-                //console.log("ERROR LOG: " + hexTransparentPixelGroups[x][y]);
-                //console.log(hexColorIndexString.length);
-               // console.log("x" + x);
-               // console.log("y" + y);
-                break;
-            } else {
-                thecolor = hexToDec(thecolor);
-            }
-            if (hexColorIndexString[thecolor * 4] != undefined) {
-                var rgbColors = getColors("0x" + hexColorIndexString.substr(thecolor * 4, 4));
-                var subFinalArray = [];
-                subFinalArray.push(rgbColors[0]);
-                subFinalArray.push(rgbColors[1]);
-                subFinalArray.push(rgbColors[2]);
-                //get hexTransparentPixelGroupIndexesString string from x and y
-                var stripnumber = hexToDec(hexTransparentPixelGroupIndexesString.substr(x * 4, 4));
-                var pixelinstrip = Math.floor(y / 2);
-                var position = stripnumber * 32 + pixelinstrip;
-                if (thecolor == 0) {
-                    subFinalArray[3] = 0;
-                } else {
-                    subFinalArray.push(255);
-                }
-                subFinalArray.push(position);
-                finalArray.push(subFinalArray);
-            } else {
-                //document.getElementById("warning").innerHTML = "problems parsing transparentPixelData array, may not display correctl, if at all";
-                //console.log("ERROR LOG: " + hexTransparentPixelGroups[x][y]);
-                //console.log(hexColorIndexString.length);
-                //console.log("x" + x);
-                //console.log("y" + y);
-                break;
-
-            }
-
-        }
-
-    }
- //   console.log("length" + finalArray.length);
-
+    renderPixelGroupsToCanvasArray(hexTransparentPixelGroups,hexTransparentPixelGroupIndexesString,hexColorIndexString,true);
     //closing tag forr transparentpixelgroups
 }
 	//closing tag forr renderblockmap
         self.postMessage(["finished",finalArray]);
+        self.postMessage(['infos',hexColorIndexString]);
 	self.close();
 	    }
 renderBlockmap(dataa[0],dataa[1],dataa[2],dataa[3],dataa[4],dataa[5]); 
