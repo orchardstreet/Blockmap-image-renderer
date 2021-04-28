@@ -20,10 +20,9 @@ wss.addEventListener("message", e => {
 //	console.log(responsee["response"]);
 	if (responsee["response"] == "error") {
 	document.getElementById("response").innerHTML = responsee["value"];
-        setTimeout(function() {document.getElementById("response").innerHTML = "";  },3000);
 	} else if (responsee["response"] == "singleRawImageData") {
 //	document.getElementById("response").innerHTML = JSON.stringify(responsee);      
-		
+	document.getElementById("innerinfos").innerHTML = "";
 		
 		//PLUG IN VALUES HEEEERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!
         worker = new Worker('render-worker.js');
@@ -39,6 +38,13 @@ wss.addEventListener("message", e => {
 	}
 });
 
+function displayColors(hexColorIndexString) {
+	        for (var x = 0; x < hexColorIndexString.length; x = x+4) {
+		document.getElementById("innerinfos").innerHTML += hexColorIndexString.slice(x,x+4) + "  ";
+		} 
+}
+
+
 function workerMessaged(ev) {
 	let fromwebworker = ev.data;
 	if (fromwebworker[0] == "publicnotice") {
@@ -49,8 +55,11 @@ function workerMessaged(ev) {
 	} else if (fromwebworker[0] == "finished") {
 	console.log("webworker finished and returned data");
 	document.getElementById("response").innerHTML = "rendering: finished";
-        setTimeout(function() {document.getElementById("response").innerHTML = "<br>";  },10000);
          thefinalArray = fromwebworker[1];
+	redraw();
+	} else if (fromwebworker[0] == "infos") {
+		setTimeout(function() {displayColors(fromwebworker[1]);},30);
+
 	}
 
 
