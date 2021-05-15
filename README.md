@@ -50,3 +50,17 @@ DB_QUEUELIMIT=0
 ---------------------------
 
 node index.html
+
+---------------------------
+
+next, install emsdk, then:
+
+mv hello.cpp /root/emsdk
+
+mv compile.sh /root/emsdk
+
+cd /root/emsdk
+
+./compile.sh
+
+then move the newly generated hello.wasm and hello.js to your client folder on the server
