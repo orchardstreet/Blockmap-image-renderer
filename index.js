@@ -42,10 +42,9 @@ async function syncDatabaseToBlockchainData() {
     const connection1 = await pool.getConnection();
     await connection1.beginTransaction();
     try {
-        console.log("\nConnected to database\n");
+        //console.log("\nConnected to database\n");
         var result1 = await connection1.query("select * from data where id=(select max(id) from data)");
-        if (Object.values(result1[0])[0] == undefined) {
-            latestMysqlID = -1;
+        if (Object.values(result1[0])[0] == undefined) { latestMysqlID = -1;
         } else {
             latestMysqlID = Object.values(result1[0])[0].id;
         }
@@ -68,7 +67,7 @@ async function syncDatabaseToBlockchainData() {
         throw err;
     } finally {
         await connection1.release();
-        console.log("\nDatabase connection 1 is closed");
+        //console.log("\nDatabase connection 1 is closed");
     }
 }
 
@@ -78,7 +77,7 @@ async function getJavascriptObjectofID(IDD) {
     await connection2.beginTransaction();
 trying: try {
 	var gotit = 0;
-        console.log("\nConnected to database\n");
+        //console.log("\nConnected to database\n");
 	IDD = parseInt(IDD);
 	if (!isNaN(IDD) && IDD < 1000000000) {
         var result2 = await connection2.query("select * from data where id=" + IDD);
@@ -96,7 +95,7 @@ trying: try {
         throw err;
     } finally {
         await connection2.release();
-        console.log("\nDatabase connection 2 is closed");
+        //console.log("\nDatabase connection 2 is closed");
 	if (gotit == 1) {
 	return result3;
 	} else {

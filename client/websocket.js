@@ -7,7 +7,6 @@ wss.onopen = () => {
     console.log('Now connected');
     document.getElementById('notif').innerHTML = "Connected";
     document.getElementById('notif').style.color = "green";
-    document.getElementById('notif').style.top = "50px";
     document.getElementById('notif').style.lineHeight = "18px";
 };
 
@@ -19,7 +18,8 @@ wss.addEventListener("message", e => {
 //	console.log(responsee);
 //	console.log(responsee["response"]);
 	if (responsee["response"] == "error") {
-	document.getElementById("response").innerHTML = responsee["value"];
+	document.getElementById("warning").innerHTML = responsee["value"];
+	setTimeout(function() {document.getElementById("warning").innerHTML = ""},3000);
 	} else if (responsee["response"] == "singleRawImageData") {
 //	document.getElementById("response").innerHTML = JSON.stringify(responsee);      
 	document.getElementById("innerinfos").innerHTML = "";
@@ -33,8 +33,8 @@ wss.addEventListener("message", e => {
 	worker.addEventListener('message',workerError);
 
 	} else {
-        document.getElementById("response").innerHTML = "undocumented error";	
-        setTimeout(function() {document.getElementById("response").innerHTML = "<br>";  },3000);
+        document.getElementById("warning").innerHTML = "undocumented error";	
+        setTimeout(function() {document.getElementById("warning").innerHTML = "<br>";  },3000);
 	}
 });
 

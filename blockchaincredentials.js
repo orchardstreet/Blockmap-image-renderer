@@ -6,5 +6,6 @@ var abi2 = [{"inputs":[{"internalType":"contract PaintToken","name":"_tokenAddr"
 
 //put Infura Ethereum API key down in the url vaiable below, as a string
 var url = '';
+//var url = 'https://eth-mainnet.alchemyapi.io/v2/aqLLgPe_WlxTYUMvtnq-gQ-HnPBp8cfo'
 
 module.exports = {abi1, abi2, address1, address2, url};

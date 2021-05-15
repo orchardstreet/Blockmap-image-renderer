@@ -1,4 +1,3 @@
-
 <!DOCTYPE html >
     <html>
 	    <head>
@@ -6,20 +5,185 @@
 .headers {
 margin-bottom:9px;
 }
-body{margin:0;overflow:hidden}
+body{
+	margin:30px 30px 0px 30px;
+}
+* {
+box-sizing:border-box;
+}
+/* Create three unequal columns that floats next to each other */
+.column {
+	  float: left;
+	    padding: 10px;
+}
+
+.left, .right {
+	  width: 200px;
+}
+
+.middle {
+	  min-width: 350px;
+	  text-align:center;
+}
+
+/* Clear floats after the columns */
+.row:after {
+	  content: "";
+	    display: table;
+	      clear: both;
+}
 </style>
 	    </head>
     <body>
 	    <div style="position:relative;height:70px;margin-bottom:5px;">
-		    <div style="position:relative;top:20px;left:25px;padding-left:24px;box-sizing:border-box;font-weight:bold;text-align:left;width:120px;height:70px;background-color:#fafafa;line-height:20px;border:1px solid #ccc;display:inline-block;float:left;border-radius:20px;padding-top:4px;">Blockmap<br>Image<br>Renderer </div><div style="box-sizing:border-box;text-align:center;background-color:#fafafa;padding-top:2px;padding-right:20px;padding-left:20px;position:relative;top:40px;margin-right:20px;border-radius:10px;float:right;color:green;border:1px solid #ccc;font-weight:bold;height:auto;width:auto;line-height:17px;padding-bottom:3px;display:inline-block;vertical-align:top;color:red;font-size:12px;" id="notif">Not connected<br>Notify site owner</div>
+		    <div style="position:relative;padding-left:24px;box-sizing:border-box;font-weight:bold;text-align:left;width:120px;height:70px;background-color:#fafafa;line-height:20px;border:1px solid #ccc;display:inline-block;float:left;border-radius:20px;padding-top:4px;">Blockmap<br>Image<br>Renderer </div><div style="box-sizing:border-box;text-align:center;background-color:#fafafa;padding-top:2px;padding-right:20px;padding-left:20px;position:relative;margin-right:10px;border-radius:10px;float:right;color:green;border:1px solid #ccc;font-weight:bold;height:auto;width:auto;line-height:17px;padding-bottom:3px;display:inline-block;vertical-align:top;color:red;font-size:12px;" id="notif">Not connected<br>Notify site owner</div>
 	    </div>
-	   <div style="position:relative;">
-    <div style="margin-left:calc(50vw - 100px);position:relative;top:-30px;">Enter an image ID: (1 - 209)</div>
-    <input style="display:inline-block;margin-left:calc(50vw - 130px);position:relative;top:-20px;" id = "answer" type = "text"> </input> 
-    <button style="display:inline-block;position:relative;top:-20px;" id = "answerbutton"> Submit </button><div style="width:200px;display:inline-block;margin-left:20px;vertical-align:top;position:relative;top:-20px;margin-right:0px;" id="warning"></div>
-    <div class="headers" id = "response"><br></div> 
-    <div style="margin-bottom:10px;max-width:50vw;min-height:155px;font-size:16px;background-color:#fafafa;border:1px solid #ccc;box-sizing:border-box;border-radius:10px;padding:20px 0px 0px 0px;text-align:center;" id = "infos">RGB-565 colors in image:<div style="overflow:auto;max-height:72px;margin-top:20px;margin-bottom:10px;"><div id="innerinfos" style="text-align:center;font-family:monospace;margin-top:0px;padding:0px 20px 0px 20px;"></div></div></div>
+		   <div class="row" style='display:flex;justify-content:center;'>
+			     <div class="column left" style="background-color:#aaa;">
+				       </div>
+				         <div class="column middle" style="background-color:#bbb;">
+    <div id="latestID" style=""></div>
+    <button style="display:inline-block;" id = "leftnext">&#8592;</button>
+    <input style="display:inline-block;" placeholder="Enter image ID" id = "answer" type = "text"> </input> 
+    <button style="display:inline-block;" id = "rightnext">&#8594;</button>
+							   </div>
+							     <div class="column right" style="background-color:#ccc;">
+								       </div>
 	   </div>
+    <div style="width:200px;display:inline-block;margin-left:20px;vertical-align:top;" id="warning"></div>
+    <button style="margin-left:auto;margin-right:auto;display:block;" id = "answerbutton"> Submit </button>
+    <div class="headers" id = "response"><br></div> 
+    <div style="text-align:center;max-height:156px;">
+    <div style="display:inline-block;margin-bottom:10px;width:30vw;min-height:155px;font-size:16px;background-color:#fafafa;border:1px solid #ccc;box-sizing:border-box;border-radius:10px;padding:20px 0px 0px 0px;text-align:center;" id = "infos">RGB-565 colors in image:<div style="overflow:auto;max-height:72px;margin-top:20px;margin-bottom:10px;"><div id="innerinfos" style="text-align:center;font-family:monospace;margin-top:0px;padding:0px 20px 0px 20px;"></div></div></div>
+    <div style="vertical-align:top;display:inline-block;margin-bottom:10px;width:60vw;min-height:155px;font-size:16px;background-color:#fafafa;border:1px solid #ccc;box-sizing:border-box;border-radius:10px;padding:20px 0px 0px 0px;text-align:center;" id = "infos">Arrays:<div style="overflow:auto;max-height:72px;margin-top:20px;margin-bottom:10px;"><div id="decimal" style="text-align:center;font-family:monospace;margin-top:0px;padding:0px 20px 0px 20px;"></div></div></div>
+	   </div>
+    <script src="hello.js"></script>
+	<script>
+		var decimalColorIndex = ['26484516868000143969038030621562475894996979'];
+		var decimalPixelData = ['524870908049384460861811474837373182210688815092578742085643187551166189824',
+		'528404602179763981799830234802589341431324697357217695526097682199672049920',
+		'531938296310143502737848994767805500651960579621856648966552176848177910016',
+		'535471990440523023675867754733021659872596461886495602407006671496683770112'];
+		var decimalTransparentPixelGroups = [
+		"1773775876797123091660094745843871137458179912157484130506396813846708481",
+		"1773775876797123091660468890263027848605240055474659498959428732594487553",
+		"1773775876797123091660094745843871137458179912157484130506396813846708481",
+		"1773775876797123091660094745843871820697007722025227590675981003015651585",
+		"1773775876797123091660094757306629418925226815629039755413215933397795073",
+		"1773883716583791694219276354101631130513287547371551277140162370431156481",
+		"1773775876797123091660847453597496892638378572788223272392757277718806785",
+		"1773775876797123091853163531028121456633304750491947417797752101726650625",
+		"1773775876797123140989922758871697479463861300876856593326170514439340289",
+		"1773775876797123140988426181306574360842312357785219533738326695893598465",
+		"1773775876797135719904129993850820251477021233642886654534632412555706625",
+		"1773775876797135719905258273225995661940171709123306634834037533357375745",
+		"1773775876797135719904509984387680195293393903734873822723067425746845953",
+		"1773775876797135719904504138269626805396275893813090887689850588007497985",
+		"1773775876797135719903386106644566032837952814200904825796688769351680257",
+		"1773775876797135719903389046908615099014340562412477841720576648518304001",
+		"1773775876797123141179991081083001687234915226145676468847391293883613441",
+		"1773775876797123141180732033979676625450103899912831353249265511617855745",
+		"1773775876797123091949315706554769687913223549063453006020131423265030401",
+		"1773775876797123091661597192430174986257261273853776044782761136713957633",
+		"1773775876797123091660099147565307898761166010645982176831141879365042433",
+		"1773775876797123091660094763038008047233508361612599809520643426339586305",
+		"1773775876797123091660094745843872162308602638748606926954395495064207617",
+		"1773775876797123091660094745843871137458179912157484130506396813846708481",
+		"1773775876797123091660094745843871137458179912157484130506396813846708481",
+		"1773775876797148200067036292566926480615872742823148539928174670001537281",
+		"1773775876797123091660094745843871137458179912157484130506396813846708481",
+		"1773775876797123091660094745843871137458179912157484130578454407884636417",
+		"1773775876797123091660094745843871137458179912157484130506396813846708481",
+		"1773775876797123091660094745843871137458179912157484130506396813846708481",
+		"1773775876797123091660094745843871137458179912157484130506396813846708481",
+		"1773775876797123091660094745843871137458179912157484130506396813846708481"];
+			var decimalPixelGroups =[];
+			var decimalPixelGroupIndexes = [];
+		
+			var decimalTransparentPixelGroupIndexes = [
+			"18573381477723437171348860707555705301135802882397149492886533251233821502672",
+				"20382660479463145481621794081308607073345285819722486146222988062008263323856"];
+		        var thisiscool = new Uint32Array;	
+
+
+		      var okk = new Uint32Array(8);
+
+              function wasmShit() {
+		var numbersIntoPixels = Module.cwrap("numbersIntoPixels",null,["number","number","number","number","number","number","number","number","number","number","number","number"]);
+		//var len = input_array.length;
+		//      console.log("len: " + len);
+
+		var decimalTransparentPixelGroupsLength = decimalTransparentPixelGroups.length;
+	        var decimalTransparentPixelGroupsInput_Ptr = Module._malloc(32 * decimalTransparentPixelGroupsLength);
+		      if (decimalTransparentPixelGroupsLength > 0){ 
+		bringToWasm(decimalTransparentPixelGroups,decimalTransparentPixelGroupsInput_Ptr);
+		      }
+		var decimalTransparentPixelGroupIndexesLength = decimalTransparentPixelGroupIndexes.length;
+	        var decimalTransparentPixelGroupIndexesInput_Ptr = Module._malloc(32 * decimalTransparentPixelGroupIndexesLength);
+		      if (decimalTransparentPixelGroupIndexesLength > 0){ 
+		bringToWasm(decimalTransparentPixelGroupIndexes,decimalTransparentPixelGroupIndexesInput_Ptr);
+		      }
+		var decimalPixelGroupsLength = decimalPixelGroups.length;
+	        var decimalPixelGroupsInput_Ptr = Module._malloc(32 * decimalPixelGroupsLength);
+		      if (decimalPixelGroupsLength > 0) {
+		bringToWasm(decimalPixelGroups,decimalPixelGroupsInput_Ptr);
+		      }
+		var decimalPixelGroupIndexesLength = decimalPixelGroupIndexes.length;
+	        var decimalPixelGroupIndexesInput_Ptr = Module._malloc(32 * decimalPixelGroupIndexesLength);
+		      if (decimalPixelGroupIndexesLength > 0) {
+		bringToWasm(decimalPixelGroupIndexes,decimalPixelGroupIndexesInput_Ptr);
+		      }
+		var decimalPixelDataLength = decimalPixelData.length;
+	        var decimalPixelDataInput_Ptr = Module._malloc(32 * decimalPixelDataLength);
+		      if (decimalPixelDataLength > 0) {
+		bringToWasm(decimalPixelData,decimalPixelDataInput_Ptr);
+		      }
+		var decimalColorIndexLength = decimalColorIndex.length;
+	        var decimalColorIndexInput_Ptr = Module._malloc(32 * decimalColorIndexLength);
+		      if (decimalColorIndexLength > 0) {
+		bringToWasm(decimalColorIndex,decimalColorIndexInput_Ptr);
+		      }
+//--------------------------------
+		      function bringToWasm(arrayToWasm,input_ptr) {
+
+		var counter = input_ptr / 4;
+
+		      for (var i = 0; i < arrayToWasm.length; i ++) {
+			      try {
+		okk[0] = parseInt(BigInt(arrayToWasm[i]) >> 224n);
+		okk[1] = parseInt((BigInt(arrayToWasm[i]) >> 192n) & 4294967295n);
+		okk[2] = parseInt((BigInt(arrayToWasm[i]) >> 160n) & 4294967295n);
+		okk[3] = parseInt((BigInt(arrayToWasm[i]) >> 128n) & 4294967295n);
+		okk[4] = parseInt((BigInt(arrayToWasm[i]) >> 96n) & 4294967295n);
+		okk[5] = parseInt((BigInt(arrayToWasm[i]) >> 64n) & 4294967295n);
+		okk[6] = parseInt((BigInt(arrayToWasm[i]) >> 32n) & 4294967295n);
+		okk[7] = parseInt(BigInt(arrayToWasm[i]) & 4294967295n);
+			      } catch(err) {
+				      console.log(i);
+				      console.log(err);
+
+			      }
+	        Module.HEAPU32.set(okk, counter + (i * 8));
+			     // console.log(i);
+
+		      //4 * number of lines
+//		console.log("Javascript side array: " + input_array);
+
+		      }
+		}
+//--------------------------------
+		numbersIntoPixels(decimalTransparentPixelGroupsInput_Ptr, 8 * decimalTransparentPixelGroupsLength,decimalTransparentPixelGroupIndexesInput_Ptr, 8 * decimalTransparentPixelGroupIndexesLength,decimalPixelGroupsInput_Ptr, 8 * decimalPixelGroupsLength, decimalPixelGroupIndexesInput_Ptr, 8 * decimalPixelGroupIndexesLength, decimalPixelDataInput_Ptr, 8 * decimalPixelDataLength, decimalColorIndexInput_Ptr, 8 * decimalColorIndexLength);
+		//deallocate WASM memory
+		Module._free(decimalTransparentPixelGroupsInput_Ptr);
+		Module._free(decimalTransparentPixelGroupIndexesInput_Ptr);
+		Module._free(decimalPixelGroupsInput_Ptr);
+		Module._free(decimalPixelGroupIndexesInput_Ptr);
+		Module._free(decimalPixelDataInput_Ptr);
+		Module._free(decimalColorIndexInput_Ptr);
+	      }
+//        var ok = Uint32Array(decimalTransparentPixelGroups);
+//	console.log("reeee: " + ok);
+	</script>
 	<script type='text/javascript' > 
 		  var thefinalArray = []; 
 //       DRAW THE IMAGE ON HTML5 CANVAS
@@ -52,10 +216,6 @@ function draw() {
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script>
     <script type="text/javascript" src="websocket.js"></script>
     <script type="text/javascript" src="userInput.js"></script>
-    <script src="hello.js"></script>
-	<script>
-	</script>
 
 </body> 
 </html>
-
